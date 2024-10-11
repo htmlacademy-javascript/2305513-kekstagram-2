@@ -10,14 +10,12 @@ const checkString = (string = '', maxSymbols = 1) => string.length <= maxSymbols
 
 checkString();
 
-
 // // Строка является палиндромом
 // имяФункции('топот'); // true
 // // Несмотря на разный регистр, тоже палиндром
 // имяФункции('ДовОд'); // true
 // // Это не палиндром
 // имяФункции('Кекс');  // false
-
 
 const isPaledrome = (string = '') => {
   string = string.replaceAll(' ', '').toLowerCase();
