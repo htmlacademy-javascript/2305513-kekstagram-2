@@ -17,16 +17,29 @@ checkString();
 // // Это не палиндром
 // имяФункции('Кекс');  // false
 
-const isPaledrome = (string = '') => {
-  string = string.replaceAll(' ', '').toLowerCase();
+/*  const isPaledrome = (string = '') => {
+    string = string.replaceAll(' ', '').toLowerCase();
 
-  let invertedLine = '';
+    let invertedLine = '';
 
-  for (let i = string.length - 1; i >= 0; i--) {
-    invertedLine += string[i];
-  }
+    for (let i = string.length - 1; i >= 0; i--) {
+      invertedLine += string[i];
+    }
 
-  return string === invertedLine;
+    return string === invertedLine;
+    };
+
+    isPaledrome();
+
+*/
+
+// решение через массив
+
+const isPaledrome = (string) => {
+  const newString = string.replaceAll(' ', '').toLowerCase();
+  const reversString = newString.split('').reverse().join('');
+
+  return newString === reversString;
 };
 
 isPaledrome();
