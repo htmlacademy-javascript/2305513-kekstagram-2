@@ -43,3 +43,14 @@ const isPaledrome = (string) => {
 };
 
 isPaledrome();
+
+
+// дополнительная задача.
+
+function isString(str) {
+  return Number(
+    [...str].filter((item) => !isNaN(parseInt(item, 10))).join('') || NaN
+  );
+}
+
+console.log(isString(''));
