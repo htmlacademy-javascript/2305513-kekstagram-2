@@ -6,9 +6,9 @@
 // имяФункции('проверяемая строка', 10); // false
 
 
-const checkString = (string = '', maxSymbols = 1) => string.length <= maxSymbols;
+// const checkString = (string = '', maxSymbols = 1) => string.length <= maxSymbols;
 
-checkString();
+// checkString();
 
 // // Строка является палиндромом
 // имяФункции('топот'); // true
@@ -35,22 +35,23 @@ checkString();
 
 // решение через массив
 
-const isPaledrome = (string) => {
-  const newString = string.replaceAll(' ', '').toLowerCase();
-  const reversString = newString.split('').reverse().join('');
+// const isPaledrome = (string) => {
+//   const newString = string.replaceAll(' ', '').toLowerCase();
+//   const reversString = newString.split('').reverse().join('');
 
-  return newString === reversString;
-};
+//   return newString === reversString;
+// };
 
-isPaledrome();
+// isPaledrome();
 
 
 // дополнительная задача.
 
 function isString(str) {
+  str = str.toString();
   return Number(
     [...str].filter((item) => !isNaN(parseInt(item, 10))).join('') || NaN
   );
 }
 
-console.log(isString(''));
+console.log(isString());
