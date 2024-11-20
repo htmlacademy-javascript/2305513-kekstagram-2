@@ -7,14 +7,29 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-//рандомное число от 1 до 25
+const NAMES = [
+  'Василий',
+  'Елена',
+  'Анатолий',
+  'Анастасия',
+  'Юлия',
+  'Вероника',
+  'Виктория',
+];
 
+const DESCRIPTION = [
+  'Моя первая публикация',
+  'Сегодня хороший день',
+  'Доброе утро',
+  'Хорошего дня',
+];
+
+//рандомное число
 
 function getRandomInteger(min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
-
   return Math.floor(result);
 }
 
@@ -35,22 +50,41 @@ function createRandomIdFromRangeGenerator(min, max) {
   };
 }
 
+function createIdGenerator(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+const generateId = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
-console.log(generatePhotoId(1, 25));
+const generateLikes = createRandomIdFromRangeGenerator(15, 200);
+const generateAvatarId = createIdGenerator(1, 6);
+const generateCommentatorId = createRandomIdFromRangeGenerator(1, 500);
 
 // рандомное сообщение
 
-const getRandomIntegers = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const getRandomArrayElement = (elements) => elements[getRandomIntegers(0, elements.length - 1)];
+//создание рандомных коментариев
+
+const createComment = () => ({
+  id: generateCommentatorId(1, 500),
+  message: getRandomArrayElement(MESSAGES),
+  avatar: `img/avatar-${generateAvatarId}.svg`,
+  name: getRandomArrayElement(NAMES),
+});
+
+const comment = Array.from({ length: 30 }, createComment);
+
+//создание рандомных постов с комментариями
 
 const createMessage = () => ({
-  message: getRandomArrayElement(MESSAGES),
+  id: generateId(1, 25),
+  url: `photos/${generatePhotoId(1, 25)}.jpg`,
+  description: getRandomArrayElement(DESCRIPTION),
+  likes: generateLikes(15, 200),
+  comments: comment,
 });
 
 const similarMessage = Array.from({ length: 25 }, createMessage);
