@@ -59,7 +59,6 @@ function createIdGenerator(min, max) {
 const generateId = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
 const generateLikes = createRandomIdFromRangeGenerator(15, 200);
-const generateAvatarId = createIdGenerator(1, 6);
 const generateCommentatorId = createRandomIdFromRangeGenerator(1, 500);
 
 // рандомное сообщение
@@ -71,7 +70,7 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 const createComment = () => ({
   id: generateCommentatorId(1, 500),
   message: getRandomArrayElement(MESSAGES),
-  avatar: `img/avatar-${generateAvatarId}.svg`,
+  avatar: `img/avatar-${createIdGenerator(1, 6)}.svg`,
   name: getRandomArrayElement(NAMES),
 });
 
