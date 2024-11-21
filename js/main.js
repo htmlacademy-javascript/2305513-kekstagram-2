@@ -50,11 +50,17 @@ function createRandomIdFromRangeGenerator(min, max) {
   };
 }
 
-function createIdGenerator(min, max) {
+// function createIdGenerator(min, max) {
+//   min = Math.ceil(min);
+//   max = Math.floor(max);
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// }
+
+const createIdGenerator = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};
 
 const generateId = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
