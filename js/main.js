@@ -74,7 +74,7 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const comment = Array.from({ length: 30 }, createComment);
+const comment = Array.from({ length: createIdGenerator(0, 30) }, createComment);
 
 //создание рандомных постов с комментариями
 
