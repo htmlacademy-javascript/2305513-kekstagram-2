@@ -26,14 +26,14 @@ const DESCRIPTION = [
 
 //рандомное число
 
-function getRandomInteger(min, max) {
+const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
-}
+};
 
-function createRandomIdFromRangeGenerator(min, max) {
+const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
   return function () {
@@ -48,13 +48,13 @@ function createRandomIdFromRangeGenerator(min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
-function createIdGenerator(min, max) {
+const createIdGenerator = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};
 
 const generateId = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
@@ -74,8 +74,6 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const comment = Array.from({ length: 30 }, createComment);
-
 //создание рандомных постов с комментариями
 
 const createMessage = () => ({
@@ -83,7 +81,7 @@ const createMessage = () => ({
   url: `photos/${generatePhotoId(1, 25)}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: generateLikes(15, 200),
-  comments: comment,
+  comments: Array.from({ length: createIdGenerator(0, 30) }, createComment),
 });
 
 const similarMessage = Array.from({ length: 25 }, createMessage);
