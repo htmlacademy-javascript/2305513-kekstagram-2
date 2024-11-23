@@ -74,8 +74,6 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const comment = Array.from({ length: createIdGenerator(0, 30) }, createComment);
-
 //создание рандомных постов с комментариями
 
 const createMessage = () => ({
@@ -83,7 +81,7 @@ const createMessage = () => ({
   url: `photos/${generatePhotoId(1, 25)}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: generateLikes(15, 200),
-  comments: comment,
+  comments: Array.from({ length: createIdGenerator(0, 30) }, createComment),
 });
 
 const similarMessage = Array.from({ length: 25 }, createMessage);
