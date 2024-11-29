@@ -33,9 +33,8 @@ const createIdGenerator = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const generateId = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
 const generateLikes = createRandomIdFromRangeGenerator(15, 200);
 const generateCommentatorId = createRandomIdFromRangeGenerator(1, 500);
 
-export { generateId, generatePhotoId, generateLikes, generateCommentatorId, createIdGenerator,getRandomInteger };
+export { generatePhotoId, generateLikes, generateCommentatorId, createIdGenerator, getRandomInteger };

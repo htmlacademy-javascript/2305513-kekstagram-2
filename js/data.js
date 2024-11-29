@@ -1,4 +1,4 @@
-import { generateId, generatePhotoId, generateLikes, generateCommentatorId, createIdGenerator, getRandomInteger } from './util.js';
+import { generatePhotoId, generateLikes, generateCommentatorId, createIdGenerator, getRandomInteger } from './util.js';
 
 const MESSAGES = [
   'Всё отлично!',
@@ -41,8 +41,8 @@ const createComment = () => ({
 
 //создание рандомных постов с комментариями
 
-const createMessage = () => ({
-  id: generateId(1, 25),
+const createMessage = (_, index) => ({
+  id: index + 1,
   url: `photos/${generatePhotoId(1, 25)}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: generateLikes(15, 200),
@@ -51,4 +51,5 @@ const createMessage = () => ({
 
 const similarMessage = Array.from({ length: 25 }, createMessage);
 
-export {similarMessage};
+export { similarMessage };
+
