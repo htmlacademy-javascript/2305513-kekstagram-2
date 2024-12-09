@@ -1,4 +1,4 @@
-import { generatePhotoId, generateLikes, generateCommentatorId, createIdGenerator, getRandomInteger } from './util.js';
+import { getRandomUniqueElements, getRandomArrayElement, getRandomInteger } from './util.js';
 
 const MESSAGES = [
   'Всё отлично!',
@@ -26,16 +26,19 @@ const DESCRIPTION = [
   'Хорошего дня',
 ];
 
-// рандомное сообщение
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const minIdAvatar = 1;
+const maxIdAvatar = 6;
+const minIdLikes = 15;
+const maxIdLikes = 200;
+const minComments = 0;
+const maxComments = 30;
 
 //создание рандомных коментариев
 
-const createComment = () => ({
-  id: generateCommentatorId(1, 500),
-  message: getRandomArrayElement(MESSAGES),
-  avatar: `img/avatar-${createIdGenerator(1, 6)}.svg`,
+const createComment = (_, index) => ({
+  id: index + 1,
+  message: getRandomUniqueElements(),
+  avatar: `img/avatar-${getRandomInteger(minIdAvatar, maxIdAvatar)}.svg`,
   name: getRandomArrayElement(NAMES),
 });
 
@@ -43,13 +46,13 @@ const createComment = () => ({
 
 const createMessage = (_, index) => ({
   id: index + 1,
-  url: `photos/${generatePhotoId(1, 25)}.jpg`,
+  url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
-  likes: generateLikes(15, 200),
-  comments: Array.from({ length: createIdGenerator(0, 30) }, createComment),
+  likes: getRandomInteger(minIdLikes, maxIdLikes),
+  comments: Array.from({ length: getRandomInteger(minComments, maxComments) }, createComment),
 });
 
-const similarMessage = Array.from({ length: 25 }, createMessage);
+const getPosts = () => Array.from({ length: 25 }, createMessage);
 
-export { similarMessage };
+export { MESSAGES, getPosts };
 

@@ -1,3 +1,4 @@
+import { MESSAGES } from './data.js';
 
 //рандомное число
 
@@ -8,33 +9,46 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-//рандомное число без повтора
+// рандомный элемент из массива
 
-const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
-      return null;
+// ------------------------------ дополнительное задание через while ------------------------------
+
+const getRandomUniqueElements = () => {
+  // случайное количество от 1 до длины массива
+  const count = Math.floor(Math.random() * (MESSAGES.length)) + 1;
+  const selected = [];
+
+  while (selected.length < count) {
+    const randomIndex = Math.floor(Math.random() * MESSAGES.length);
+    const randomElement = MESSAGES[randomIndex];
+
+    if (!selected.includes(randomElement)) {
+      selected.push(randomElement);
     }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
+  }
+  return selected;
 };
 
-const createIdGenerator = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
+// ------------------------------ дополнительное задание через рекурсию ------------------------------
 
-const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
-const generateLikes = createRandomIdFromRangeGenerator(15, 200);
-const generateCommentatorId = createRandomIdFromRangeGenerator(1, 500);
+// const getRandomUniqueElements = () => {
+//   if (MESSAGES.length === 0) {
+//     return [];
+//   }
+//   const randomCount = Math.floor(Math.random() * MESSAGES.length) + 1;
+//   const uniqueElements = new Set();
+//   const selectRandomElements = () => {
+//     if (uniqueElements.size === randomCount) {
+//       return;
+//     }
+//     const randomIndex = Math.floor(Math.random() * MESSAGES.length);
+//     uniqueElements.add(MESSAGES[randomIndex]);
+//     selectRandomElements();
+//   };
+//   selectRandomElements();
+//   return Array.from(uniqueElements);
+// };
 
-export { generatePhotoId, generateLikes, generateCommentatorId, createIdGenerator, getRandomInteger };
+export { getRandomUniqueElements, getRandomArrayElement, getRandomInteger };

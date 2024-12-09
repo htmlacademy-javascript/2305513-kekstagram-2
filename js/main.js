@@ -1,3 +1,4 @@
-import { similarMessage } from './data.js';
+import { getPosts } from './data.js';
 
-console.log(similarMessage);
+console.log(getPosts());
+console.log(getPosts());
