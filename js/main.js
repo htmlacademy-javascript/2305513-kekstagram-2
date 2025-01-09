@@ -1,4 +1,8 @@
 import { getPosts } from './data.js';
+import { render } from './posts.js';
 
-console.log(getPosts());
-console.log(getPosts());
+// получаю данные
+const postsList = getPosts();
+
+//отрисовываю посты
+render(postsList);
