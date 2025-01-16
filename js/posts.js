@@ -10,6 +10,8 @@ const render = (dataList) => {
     image.src = photo.url;
     image.alt = photo.description;
 
+    thumbnail.dataset.pictureId = photo.id;
+
     thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
     thumbnail.querySelector('.picture__likes').textContent = photo.likes;
 
