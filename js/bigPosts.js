@@ -1,17 +1,12 @@
-
 import { getPosts } from './data.js';
 
 const bigPicture = document.querySelector('.big-picture');
-// const commentsContainer = bigPicture.querySelector('.social__comments');
-const closeBigPicture = document.querySelector('.big-picture__cancel');
-
-closeBigPicture.addEventListener('click', () => {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-});
+const commentsContainer = bigPicture.querySelector('.social__comments');
+const closeBigPicture = bigPicture.querySelector('.big-picture__cancel');
+const postsList = getPosts();
 
 const openBigPicture = (pictureId) => {
-  const currentPicture = getPosts.find((photo) => photo.id === Number(pictureId));
+  const currentPicture = postsList.find((photo) => photo.id === Number(pictureId));
 
   bigPicture.classList.remove('hidden');
 
@@ -20,18 +15,48 @@ const openBigPicture = (pictureId) => {
   bigPicture.querySelector('.social__comment-shown-count').textContent = currentPicture.comments.length;
   bigPicture.querySelector('.social__comment-total-count').textContent = currentPicture.comments.length;
 
-  // Описание фотографии
+  commentsContainer.innerHTML = ''; // Очищает предыдущие комментарии
+  const fragment = document.createDocumentFragment();
+
+  currentPicture.comments.forEach((comment) => {
+    const commentElement = document.createElement('li');
+    commentElement.classList.add('social__comment');
+
+    const pictureNode = document.createElement('img');
+    pictureNode.classList.add('social__picture');
+    pictureNode.src = comment.avatar;
+    pictureNode.alt = comment.name;
+
+    const textNode = document.createElement('p');
+    textNode.classList.add('social__text');
+    textNode.textContent = comment.message;
+
+    commentElement.appendChild(pictureNode);
+    commentElement.appendChild(textNode);
+    fragment.appendChild(commentElement);
+  });
+
+  commentsContainer.appendChild(fragment);
   bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
 
-  // Скрывает счетчики комментариев и загрузки
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
-
-  // Добавляет класс modal-open к body
   document.body.classList.add('modal-open');
 
-  document.querySelector('.big-picture__cancel').addEventListener('click', closeBigPicture);
 };
 
-export { openBigPicture };
+const closeBigPictureHandler = () => {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
 
+const closeBigPictureOnEsc = (event) => {
+  if (event.key === 'Escape') {
+    closeBigPictureHandler();
+  }
+};
+
+closeBigPicture.addEventListener('click', closeBigPictureHandler);
+document.addEventListener('keydown', closeBigPictureOnEsc);
+
+export { openBigPicture };

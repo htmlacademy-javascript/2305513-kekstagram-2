@@ -6,10 +6,12 @@ import { openBigPicture } from './bigPosts.js';
 const postsList = getPosts();
 
 // Отрисовываю посты
-const postsContainer = render(postsList);
+render(postsList);
 
 // Добавляю обработчик событий на контейнер с постами
-postsContainer.addListener('click', (evt) => {
+const container = document.querySelector('.pictures');
+
+container.addEventListener('click', (evt) => {
   const currentPicture = evt.target.closest('.picture');
 
   if (currentPicture) {
