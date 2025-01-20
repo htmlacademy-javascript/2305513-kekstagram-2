@@ -71,23 +71,23 @@
 //   '14:00' - начало встречи
 //   90 - продолжительность встречи в минутах
 
-const isMeetingWithinWorkday = (startOfWorkday, endOfWorkday, meetingStart, meetingDuration) => {
+// const isMeetingWithinWorkday = (startOfWorkday, endOfWorkday, meetingStart, meetingDuration) => {
 
-  const timeToMinutes = (time) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    return hours * 60 + minutes;
-  };
+//   const timeToMinutes = (time) => {
+//     const [hours, minutes] = time.split(':').map(Number);
+//     return hours * 60 + minutes;
+//   };
 
-  const startMinutes = timeToMinutes(startOfWorkday);
-  const endMinutes = timeToMinutes(endOfWorkday);
-  const meetingStartMinutes = timeToMinutes(meetingStart);
-  const meetingEndMinutes = meetingStartMinutes + meetingDuration;
+//   const startMinutes = timeToMinutes(startOfWorkday);
+//   const endMinutes = timeToMinutes(endOfWorkday);
+//   const meetingStartMinutes = timeToMinutes(meetingStart);
+//   const meetingEndMinutes = meetingStartMinutes + meetingDuration;
 
-  if (startMinutes <= meetingStartMinutes && meetingEndMinutes <= endMinutes) {
-    return true;
-  } {
-    return false;
-  }
-};
+//   if (startMinutes <= meetingStartMinutes && meetingEndMinutes <= endMinutes) {
+//     return true;
+//   } {
+//     return false;
+//   }
+// };
 
-console.log(isMeetingWithinWorkday());
+// console.log(isMeetingWithinWorkday());
