@@ -1,4 +1,5 @@
 import { MESSAGES } from './data.js';
+import { closeBigPictureHandler } from './big-posts.js';
 
 //рандомное число
 
@@ -31,6 +32,12 @@ const getRandomUniqueElements = () => {
   return selected;
 };
 
+const closeBigPictureOnEsc = (event) => {
+  if (event.key === 'Escape') {
+    closeBigPictureHandler();
+  }
+};
+
 // ------------------------------ дополнительное задание через рекурсию ------------------------------
 
 // const getRandomUniqueElements = () => {
@@ -51,4 +58,4 @@ const getRandomUniqueElements = () => {
 //   return Array.from(uniqueElements);
 // };
 
-export { getRandomUniqueElements, getRandomArrayElement, getRandomInteger };
+export { getRandomUniqueElements, getRandomArrayElement, closeBigPictureOnEsc, getRandomInteger };
