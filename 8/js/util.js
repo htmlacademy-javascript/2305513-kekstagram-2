@@ -32,7 +32,7 @@ const getRandomUniqueElements = () => {
   return selected;
 };
 
-const closeBigPictureOnEsc = (event) => {
+const checkOnEsc = (event) => {
   if (event.key === 'Escape') {
     closeBigPictureHandler();
   }
@@ -58,4 +58,4 @@ const closeBigPictureOnEsc = (event) => {
 //   return Array.from(uniqueElements);
 // };
 
-export { getRandomUniqueElements, getRandomArrayElement, closeBigPictureOnEsc, getRandomInteger };
+export { getRandomUniqueElements, getRandomArrayElement, checkOnEsc, getRandomInteger };
