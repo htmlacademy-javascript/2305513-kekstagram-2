@@ -9,7 +9,7 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const commentsPerPage = 5;
 let currentCommentIndex = 0;
 
-//отрисовка комментариев
+// Отрисовка комментариев
 const renderComments = (comments, startIndex = 0) => {
   const commentsToShow = comments.slice(startIndex, startIndex + commentsPerPage);
   const fragment = document.createDocumentFragment();
@@ -35,13 +35,9 @@ const renderComments = (comments, startIndex = 0) => {
   commentsContainer.appendChild(fragment);
 };
 
-const commentsVisibility = (comments) => {
+const updateCommentsVisibility = (comments) => {
   const remainingComments = comments.length - currentCommentIndex;
-  if (remainingComments <= 0) {
-    commentsLoader.classList.add('hidden');
-  } else {
-    commentsLoader.classList.remove('hidden');
-  }
+  commentsLoader.classList.toggle('hidden', remainingComments <= commentsPerPage);
 };
 
 const openBigPicture = (currentPicture) => {
@@ -57,16 +53,16 @@ const openBigPicture = (currentPicture) => {
   bigPicture.querySelector('.social__comment-total-count').textContent = currentPicture.comments.length;
 
   bigPicture.querySelector('.social__comment-count').classList.remove('hidden');
-  bigPicture.querySelector('.comments-loader').classList.remove('hidden');
+  commentsLoader.classList.remove('hidden');
 
-  commentsVisibility(currentPicture.comments, currentCommentIndex);
+  updateCommentsVisibility(currentPicture.comments);
 
-  commentsLoader.addEventListener('click', () => {
+  commentsLoader.onclick = () => {
     currentCommentIndex += commentsPerPage;
     renderComments(currentPicture.comments, currentCommentIndex);
     bigPicture.querySelector('.social__comment-shown-count').textContent = Math.min(currentPicture.comments.length, currentCommentIndex + commentsPerPage);
-    commentsVisibility(currentPicture.comments, currentCommentIndex);
-  });
+    updateCommentsVisibility(currentPicture.comments);
+  };
 
   bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
   document.body.classList.add('modal-open');
@@ -97,3 +93,4 @@ const bigPictureHandler = (generatedPosts) => {
 };
 
 export { bigPictureHandler, closeBigPictureHandler };
+
