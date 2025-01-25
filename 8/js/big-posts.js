@@ -35,7 +35,7 @@ const renderComments = (comments, startIndex = 0) => {
   commentsContainer.appendChild(fragment);
 };
 
-const commentsVisibility = (comments) => {
+const displayChangeableNumber = (comments) => {
   const remainingComments = comments.length - currentCommentIndex;
   commentsLoader.classList.toggle('hidden', remainingComments <= commentsPerPage);
 };
@@ -55,14 +55,16 @@ const openBigPicture = (currentPicture) => {
   bigPicture.querySelector('.social__comment-count').classList.remove('hidden');
   commentsLoader.classList.remove('hidden');
 
-  commentsVisibility(currentPicture.comments);
+  // displayChangeableNumber(currentPicture.comments);
 
-  commentsLoader.onclick = () => {
+  const handleCommentsLoaderClick = () => {
     currentCommentIndex += commentsPerPage;
     renderComments(currentPicture.comments, currentCommentIndex);
     bigPicture.querySelector('.social__comment-shown-count').textContent = Math.min(currentPicture.comments.length, currentCommentIndex + commentsPerPage);
-    commentsVisibility(currentPicture.comments);
+    displayChangeableNumber(currentPicture.comments);
   };
+
+  commentsLoader.addEventListener('click', handleCommentsLoaderClick);
 
   bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
   document.body.classList.add('modal-open');
