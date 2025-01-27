@@ -10,13 +10,18 @@ const commentsPerPage = 5;
 let currentCommentIndex = 0;
 
 // Отрисовка комментариев
-const renderComments = (comments, startIndex = 0) => {
+const renderComments = (comments) => {
   const fragment = document.createDocumentFragment();
-  const commentsToRender = comments.slice(startIndex, startIndex + commentsPerPage);
 
-  commentsToRender.forEach((comment) => {
+  comments.forEach((comment, index) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
+
+    if (index < 5) {
+      commentElement.classList.remove('hidden');
+    } else {
+      commentElement.classList.add('hidden');
+    }
 
     const pictureNode = document.createElement('img');
     pictureNode.classList.add('social__picture');
@@ -33,7 +38,7 @@ const renderComments = (comments, startIndex = 0) => {
   });
 
   commentsContainer.appendChild(fragment);
-  commentsLoader.classList.toggle('hidden', startIndex + commentsPerPage >= comments.length);
+  commentsLoader.classList.toggle('hidden', comments.length <= 5);
 };
 
 const displayChangeableNumber = (comments) => {
@@ -51,9 +56,17 @@ const handleCommentsLoaderClick = (currentPicture) => {
   const remainingComments = totalComments - currentCommentIndex;
   const commentsToLoad = Math.min(commentsPerPage, remainingComments);
 
+  for (let i = currentCommentIndex; i < currentCommentIndex + commentsToLoad && i < totalComments; i++) {
+    const commentElement = commentsContainer.children[i];
+    if (commentElement) {
+      commentElement.classList.remove('hidden');
+    }
+  }
+
   currentCommentIndex += commentsToLoad;
-  renderComments(currentPicture.comments, currentCommentIndex - commentsToLoad);
   displayChangeableNumber(currentPicture.comments);
+
+  commentsLoader.classList.toggle('hidden', currentCommentIndex >= totalComments);
 };
 
 const openBigPicture = (currentPicture) => {
@@ -63,8 +76,7 @@ const openBigPicture = (currentPicture) => {
 
   commentsContainer.innerHTML = '';
   currentCommentIndex = 0;
-  renderComments(currentPicture.comments, currentCommentIndex);
-  displayChangeableNumber(currentPicture.comments);
+  renderComments(currentPicture.comments);
 
   bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
   document.body.classList.add('modal-open');
@@ -73,8 +85,14 @@ const openBigPicture = (currentPicture) => {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
-    commentsLoader.addEventListener('click', () => handleCommentsLoaderClick(currentPicture));
+    commentsLoader.onclick = () => handleCommentsLoaderClick(currentPicture);
   }
+};
+
+// Закрытие большого изображения
+closeBigPicture.onclick = () => {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
 };
 
 const onCloseBigPicture = () => {
