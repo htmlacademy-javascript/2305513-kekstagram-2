@@ -73,7 +73,6 @@ const openBigPicture = (currentPicture) => {
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img img').src = currentPicture.url;
   bigPicture.querySelector('.likes-count').textContent = currentPicture.likes;
-
   bigPicture.querySelector('.social__comment-total-count').textContent = currentPicture.comments.length;
 
   commentsContainer.innerHTML = '';
@@ -103,7 +102,11 @@ const onCloseBigPicture = () => {
 
 const bigPictureHandler = (generatedPosts) => {
   closeBigPicture.addEventListener('click', onCloseBigPicture);
-  document.addEventListener('keydown', isEscBtn);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscBtn(evt)) {
+      onCloseBigPicture();
+    }
+  });
 
   containerPicture.addEventListener('click', (evt) => {
     const currentPictures = evt.target.closest('.picture');
