@@ -74,6 +74,8 @@ const openBigPicture = (currentPicture) => {
   bigPicture.querySelector('.big-picture__img img').src = currentPicture.url;
   bigPicture.querySelector('.likes-count').textContent = currentPicture.likes;
 
+  bigPicture.querySelector('.social__comment-total-count').textContent = currentPicture.comments.length;
+
   commentsContainer.innerHTML = '';
   currentCommentIndex = 0;
   renderComments(currentPicture.comments);
@@ -81,18 +83,14 @@ const openBigPicture = (currentPicture) => {
   bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
   document.body.classList.add('modal-open');
 
+  displayChangeableNumber(currentPicture.comments);
+
   if (currentPicture.comments.length <= 5) {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
-    commentsLoader.onclick = () => handleCommentsLoaderClick(currentPicture);
+    commentsLoader.addEventListener('click', () => handleCommentsLoaderClick(currentPicture));
   }
-};
-
-// Закрытие большого изображения
-closeBigPicture.onclick = () => {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
 };
 
 const onCloseBigPicture = () => {
