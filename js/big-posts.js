@@ -12,12 +12,11 @@ let currentCommentIndex = 0;
 // Отрисовка комментариев
 const renderComments = (comments) => {
   const fragment = document.createDocumentFragment();
-
   comments.forEach((comment, index) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
-    if (index < 5) {
+    if (index < commentsPerPage) {
       commentElement.classList.remove('hidden');
     } else {
       commentElement.classList.add('hidden');
@@ -38,7 +37,7 @@ const renderComments = (comments) => {
   });
 
   commentsContainer.appendChild(fragment);
-  commentsLoader.classList.toggle('hidden', comments.length <= 5);
+  commentsLoader.classList.toggle('hidden', comments.length <= commentsPerPage);
 };
 
 const displayChangeableNumber = (comments) => {
@@ -52,43 +51,45 @@ const displayChangeableNumber = (comments) => {
 };
 
 const handleCommentsLoaderClick = (currentPicture) => {
-  const totalComments = currentPicture.comments.length;
-  const remainingComments = totalComments - currentCommentIndex;
-  const commentsToLoad = Math.min(commentsPerPage, remainingComments);
+  const allHiddenComments = commentsContainer.querySelectorAll('.social__comment.hidden');
+  const commentsToLoad = Array.from(allHiddenComments).slice(0, commentsPerPage);
 
-  for (let i = currentCommentIndex; i < currentCommentIndex + commentsToLoad && i < totalComments; i++) {
-    const commentElement = commentsContainer.children[i];
-    if (commentElement) {
-      commentElement.classList.remove('hidden');
-    }
+  if (commentsToLoad.length === 0) {
+    commentsLoader.classList.add('hidden');
+    return;
   }
 
-  currentCommentIndex += commentsToLoad;
+  commentsToLoad.forEach((commentElement) => {
+    commentElement.classList.remove('hidden');
+  });
+
+  currentCommentIndex += commentsToLoad.length;
   displayChangeableNumber(currentPicture.comments);
 
-  commentsLoader.classList.toggle('hidden', currentCommentIndex >= totalComments);
+  if (currentCommentIndex >= currentPicture.comments.length) {
+    commentsLoader.classList.add('hidden');
+  }
 };
 
 const openBigPicture = (currentPicture) => {
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img img').src = currentPicture.url;
   bigPicture.querySelector('.likes-count').textContent = currentPicture.likes;
-  bigPicture.querySelector('.social__comment-total-count').textContent = currentPicture.comments.length;
-
   commentsContainer.innerHTML = '';
   currentCommentIndex = 0;
   renderComments(currentPicture.comments);
-
   bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
   document.body.classList.add('modal-open');
-
   displayChangeableNumber(currentPicture.comments);
 
-  if (currentPicture.comments.length <= 5) {
+  if (currentPicture.comments.length <= commentsPerPage) {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
-    commentsLoader.addEventListener('click', () => handleCommentsLoaderClick(currentPicture));
+
+    const handleLoaderClick = () => handleCommentsLoaderClick(currentPicture);
+    commentsLoader.removeEventListener('click', handleLoaderClick);
+    commentsLoader.addEventListener('click', handleLoaderClick);
   }
 };
 
