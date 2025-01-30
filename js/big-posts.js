@@ -3,24 +3,20 @@ import { isEscBtn } from './util.js';
 const bigPicture = document.querySelector('.big-picture');
 const commentsContainer = bigPicture.querySelector('.social__comments');
 const closeBigPicture = bigPicture.querySelector('.big-picture__cancel');
-const containerPicture = document.querySelector('.pictures');
+const picturesСontainer = document.querySelector('.pictures');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
+const commentsCountLabel = bigPicture.querySelector('.social__comment-count');
 
-const commentsPerPage = 5;
-let currentCommentIndex = 0;
+let currentComments = [];
+const COMMENTS_TO_SHOW = 5;
 
-// Отрисовка комментариев
+// Отрисовываю комменты
 const renderComments = (comments) => {
   const fragment = document.createDocumentFragment();
-  comments.forEach((comment, index) => {
+
+  comments.forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
-
-    if (index < commentsPerPage) {
-      commentElement.classList.remove('hidden');
-    } else {
-      commentElement.classList.add('hidden');
-    }
 
     const pictureNode = document.createElement('img');
     pictureNode.classList.add('social__picture');
@@ -37,79 +33,80 @@ const renderComments = (comments) => {
   });
 
   commentsContainer.appendChild(fragment);
-  commentsLoader.classList.toggle('hidden', comments.length <= commentsPerPage);
 };
 
-const displayChangeableNumber = (comments) => {
-  const totalComments = comments.length;
-  const shownComments = currentCommentIndex + Math.min(commentsPerPage, totalComments - currentCommentIndex);
-  const remainingComments = totalComments - shownComments;
+// Показываю скрытые комменты
+const showMoreComments = () => {
+  const hiddenComments = commentsContainer.querySelectorAll('.hidden');
 
-  bigPicture.querySelector('.social__comment-shown-count').textContent = shownComments;
-  bigPicture.querySelector('.social__comment-total-count').textContent = totalComments;
-  commentsLoader.classList.toggle('hidden', remainingComments <= 0);
-};
-
-const handleCommentsLoaderClick = (currentPicture) => {
-  const allHiddenComments = commentsContainer.querySelectorAll('.social__comment.hidden');
-  const commentsToLoad = Array.from(allHiddenComments).slice(0, commentsPerPage);
-
-  if (commentsToLoad.length === 0) {
-    commentsLoader.classList.add('hidden');
-    return;
+  for (let i = 0; i < Math.min(COMMENTS_TO_SHOW, hiddenComments.length); i++) {
+    hiddenComments[i].classList.remove('hidden');
   }
 
-  commentsToLoad.forEach((commentElement) => {
-    commentElement.classList.remove('hidden');
-  });
-
-  currentCommentIndex += commentsToLoad.length;
-  displayChangeableNumber(currentPicture.comments);
-
-  if (currentCommentIndex >= currentPicture.comments.length) {
+  if (hiddenComments.length <= COMMENTS_TO_SHOW) {
     commentsLoader.classList.add('hidden');
   }
+
+  // Обновляю количество комментов
+  const visibleComments = commentsContainer.querySelectorAll('.social__comment:not(.hidden)');
+  commentsCountLabel.textContent = ` Показано ${visibleComments.length} из ${currentComments.length} комментариев`;
 };
 
+// Открываю большую пикчу и загружаю комменты
 const openBigPicture = (currentPicture) => {
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img img').src = currentPicture.url;
   bigPicture.querySelector('.likes-count').textContent = currentPicture.likes;
+
+  // Очищаю контейнер и подготавливаю комменты
   commentsContainer.innerHTML = '';
-  currentCommentIndex = 0;
-  renderComments(currentPicture.comments);
-  bigPicture.querySelector('.social__caption').textContent = currentPicture.description;
-  document.body.classList.add('modal-open');
-  displayChangeableNumber(currentPicture.comments);
+  currentComments = currentPicture.comments;
 
-  if (currentPicture.comments.length <= commentsPerPage) {
-    commentsLoader.classList.add('hidden');
-  } else {
+  // Отрисовываю все комменты
+  renderComments(currentComments);
+
+  // Скрываю лишние комменты
+  const allComments = commentsContainer.querySelectorAll('.social__comment');
+  if (allComments.length > COMMENTS_TO_SHOW) {
+    for (let i = COMMENTS_TO_SHOW; i < allComments.length; i++) {
+      allComments[i].classList.add('hidden');
+    }
     commentsLoader.classList.remove('hidden');
+  } else {
+    commentsLoader.classList.add('hidden');
+  }
 
-    const handleLoaderClick = () => handleCommentsLoaderClick(currentPicture);
-    commentsLoader.removeEventListener('click', handleLoaderClick);
-    commentsLoader.addEventListener('click', handleLoaderClick);
+  commentsLoader.addEventListener('click', showMoreComments);
+
+  // Показываю колличество показанных комментов
+  commentsCountLabel.textContent = ` Показано ${Math.min(currentComments.length, COMMENTS_TO_SHOW)} из ${currentComments.length} комментариев `;
+  document.body.classList.add('modal-open');
+};
+
+// Закрываю пост
+const closeBigPictureHandler = () => {
+  bigPicture.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+// Проверка на Esc
+const closeBigPictureOnEsc = (event) => {
+  if (isEscBtn(event)) {
+    closeBigPictureHandler();
   }
 };
 
-const onCloseBigPicture = () => {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  commentsContainer.innerHTML = '';
-  commentsLoader.removeEventListener('click', handleCommentsLoaderClick);
-  document.removeEventListener('keydown', isEscBtn);
+// Удаление обработчиков
+const initBigPictureEvents = () => {
+  closeBigPicture.addEventListener('click', closeBigPictureHandler);
+  document.addEventListener('keydown', closeBigPictureOnEsc);
 };
 
+// Вся логика
 const bigPictureHandler = (generatedPosts) => {
-  closeBigPicture.addEventListener('click', onCloseBigPicture);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscBtn(evt)) {
-      onCloseBigPicture();
-    }
-  });
+  initBigPictureEvents();
 
-  containerPicture.addEventListener('click', (evt) => {
+  picturesСontainer.addEventListener('click', (evt) => {
     const currentPictures = evt.target.closest('.picture');
 
     if (currentPictures) {
