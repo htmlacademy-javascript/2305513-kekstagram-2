@@ -1,5 +1,4 @@
 import { MESSAGES } from './data.js';
-import { closeBigPictureHandler } from './big-posts.js';
 
 //рандомное число
 
@@ -32,11 +31,7 @@ const getRandomUniqueElements = () => {
   return selected;
 };
 
-const checkOnEsc = (event) => {
-  if (event.key === 'Escape') {
-    closeBigPictureHandler();
-  }
-};
+const isEscBtn = (event) => event.key === 'Escape';
 
 // ------------------------------ дополнительное задание через рекурсию ------------------------------
 
@@ -58,4 +53,4 @@ const checkOnEsc = (event) => {
 //   return Array.from(uniqueElements);
 // };
 
-export { getRandomUniqueElements, getRandomArrayElement, checkOnEsc, getRandomInteger };
+export { getRandomUniqueElements, getRandomArrayElement, isEscBtn, getRandomInteger };
