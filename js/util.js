@@ -31,6 +31,8 @@ const getRandomUniqueElements = () => {
   return selected;
 };
 
+const isEscBtn = (event) => event.key === 'Escape';
+
 // ------------------------------ дополнительное задание через рекурсию ------------------------------
 
 // const getRandomUniqueElements = () => {
@@ -51,4 +53,4 @@ const getRandomUniqueElements = () => {
 //   return Array.from(uniqueElements);
 // };
 
-export { getRandomUniqueElements, getRandomArrayElement, getRandomInteger };
+export { getRandomUniqueElements, getRandomArrayElement, isEscBtn, getRandomInteger };
