@@ -9,8 +9,7 @@ const isValidateHashtags = (value) => {
 
   const inputText = value.toLowerCase().trim();
 
-  // проверка на отсутствие хештегов
-  if (inputText.lenght === 0) {
+  if (inputText.length === 0) {
     return true;
   }
 
@@ -26,10 +25,6 @@ const isValidateHashtags = (value) => {
       error: 'Хештеги разделяются пробелами',
     },
     {
-      check: inputArray.some((item) => item === '#'),
-      error: 'Хештег не может состоять только из решётки',
-    },
-    {
       check: inputArray.some((item) => item[0] !== '#'),
       error: 'Хештег должен начинаться с решётки',
     },
@@ -38,15 +33,15 @@ const isValidateHashtags = (value) => {
       error: 'Хештеги не должны повторяться',
     },
     {
-      check: inputArray.some((item) => item.lenght > MAX_SIMBOLS),
-      error: 'Максимальная величина хештега с решёткой: &{MAX_SIMBOLS} символов',
+      check: inputArray.some((item) => item.length > MAX_SIMBOLS),
+      error: `Максимальная величина хештега с решёткой: ${MAX_SIMBOLS} символов`,
     },
     {
-      check: inputArray.lenght > MAX_HASHTAGS,
-      error: 'Досигнуто максимальное колличество хештегов',
+      check: inputArray.length > MAX_HASHTAGS,
+      error: 'Досигнуто максимальное количество хештегов',
     },
     {
-      check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.text(item)),
+      check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
       error: 'Хештег содержит недопустимые символы',
     },
   ];
@@ -58,7 +53,6 @@ const isValidateHashtags = (value) => {
     }
     return !isInvalid;
   });
-
 };
 
 export { error, isValidateHashtags };
