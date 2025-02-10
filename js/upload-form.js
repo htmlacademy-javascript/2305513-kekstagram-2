@@ -11,14 +11,14 @@ const uploadFileOverlay = uploadForm.querySelector('.img-upload__overlay');
 const hashtagUserInput = uploadForm.querySelector('.text__hashtags');
 const commentUserInput = uploadForm.querySelector('.text__description');
 
-// валидация формы
+// Валидация формы
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper--error',
-  errorClass: 'pristine-error',
+  classTo: 'img-upload__form',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-//закрыть модуль
+// Функция для закрытия модуля
 const closeModule = () => {
   uploadFileOverlay.classList.add('hidden');
   pageBody.classList.remove('modal-open');
@@ -28,19 +28,13 @@ const closeModule = () => {
 
 const closeModuleBtnClick = () => closeModule();
 
-//закрыть модуль на Esc
 const closeModuleOnEsc = (event) => {
-  if (isEscBtn(event)) {
-    if (document.activeElement !== hashtagUserInput && document.activeElement !== commentUserInput) {
-      closeModule();
-    }
+  if (isEscBtn(event) && document.activeElement !== hashtagUserInput && document.activeElement !== commentUserInput) {
+    closeModule();
   }
 };
 
-//функционал модуля
-const openModule = () => {
-  uploadFileOverlay.classList.remove('hidden');
-  pageBody.classList.add('modal-open');
+const addListeners = () => {
   uploadCancelBtn.addEventListener('click', closeModuleBtnClick);
   document.addEventListener('keydown', closeModuleOnEsc);
 };
@@ -57,6 +51,14 @@ const onFormSubmit = (evt) => {
   }
 };
 
+// Функция для открытия модуля
+const openModule = () => {
+  uploadFileOverlay.classList.remove('hidden');
+  pageBody.classList.add('modal-open');
+  addListeners();
+};
+
+// Функция для обновления модуля
 const updateModule = () => {
   uploadFileInput.addEventListener('change', openModule);
   pristine.addValidator(hashtagUserInput, isValidateHashtags, error, false);
