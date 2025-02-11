@@ -11,6 +11,16 @@ const uploadFileOverlay = uploadForm.querySelector('.img-upload__overlay');
 const hashtagUserInput = uploadForm.querySelector('.text__hashtags');
 const commentUserInput = uploadForm.querySelector('.text__description');
 
+//кнопочки и т.д для увеличения и уменьшения пикчи
+
+const smallerBtn = document.querySelector('.scale__control--smaller');
+const biggerBtn = document.querySelector('.scale__control--bigger');
+const scaleValueInput = document.querySelector('.scale__control--value');
+const imagePreview = document.querySelector('.img-upload__preview img');
+
+let scaleValue = 1;
+const SCALE_STEP = 0.25;
+
 // Валидация формы
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__form',
@@ -24,6 +34,9 @@ const closeModule = () => {
   pageBody.classList.remove('modal-open');
   uploadFileInput.value = '';
   pristine.reset();
+  scaleValue = 1;
+  imagePreview.style.transform = 'scale(1)';
+  scaleValueInput.value = '100%';
 };
 
 const closeModuleBtnClick = () => closeModule();
@@ -58,12 +71,32 @@ const openModule = () => {
   addListeners();
 };
 
+// функционал увеличения и уменьшения картинки
+
+const onSmallerBtnClick = () => {
+  if (scaleValue > SCALE_STEP) {
+    scaleValue -= SCALE_STEP;
+    imagePreview.style.transform = `scale(${scaleValue})`;
+    scaleValueInput.value = `${Math.round(scaleValue * 100)}%`;
+  }
+};
+
+const onBiggerBtnClick = () => {
+  if (scaleValue < 1) {
+    scaleValue += SCALE_STEP;
+    imagePreview.style.transform = `scale(${scaleValue})`;
+    scaleValueInput.value = `${Math.round(scaleValue * 100)}%`;
+  }
+};
+
 // Функция для обновления модуля
 const updateModule = () => {
   uploadFileInput.addEventListener('change', openModule);
   pristine.addValidator(hashtagUserInput, isValidateHashtags, error, false);
   uploadForm.addEventListener('submit', onFormSubmit);
   hashtagUserInput.addEventListener('input', onHashtagInput);
+  smallerBtn.addEventListener('click', onSmallerBtnClick);
+  biggerBtn.addEventListener('click', onBiggerBtnClick);
 };
 
 export { updateModule };
