@@ -1,5 +1,6 @@
 import { isEscBtn } from './util.js';
 import { error, isValidateHashtags } from './validate-hashtags.js';
+import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -33,6 +34,8 @@ const closeModule = () => {
   uploadFileOverlay.classList.add('hidden');
   pageBody.classList.remove('modal-open');
   uploadFileInput.value = '';
+  hashtagUserInput.value = '';
+  commentUserInput.value = '';
   pristine.reset();
   scaleValue = 1;
   imagePreview.style.transform = 'scale(1)';
@@ -69,6 +72,7 @@ const openModule = () => {
   uploadFileOverlay.classList.remove('hidden');
   pageBody.classList.add('modal-open');
   addListeners();
+  resetImagePreview();
 };
 
 // функционал увеличения и уменьшения картинки
@@ -89,6 +93,15 @@ const onBiggerBtnClick = () => {
   }
 };
 
+const commentMaxLengthValidator = (value) => value.length <= 140;
+
+pristine.addValidator(
+  commentUserInput,
+  commentMaxLengthValidator,
+  'Длина комментария не должна превышать 140 символов.',
+  false
+);
+
 // Функция для обновления модуля
 const updateModule = () => {
   uploadFileInput.addEventListener('change', openModule);
@@ -97,6 +110,7 @@ const updateModule = () => {
   hashtagUserInput.addEventListener('input', onHashtagInput);
   smallerBtn.addEventListener('click', onSmallerBtnClick);
   biggerBtn.addEventListener('click', onBiggerBtnClick);
+  isEffectsRadio();
 };
 
 export { updateModule };
