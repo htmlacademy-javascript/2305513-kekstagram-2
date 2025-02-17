@@ -13,7 +13,6 @@ const hashtagUserInput = uploadForm.querySelector('.text__hashtags');
 const commentUserInput = uploadForm.querySelector('.text__description');
 
 //кнопочки и т.д для увеличения и уменьшения пикчи
-
 const smallerBtn = document.querySelector('.scale__control--smaller');
 const biggerBtn = document.querySelector('.scale__control--bigger');
 const scaleValueInput = document.querySelector('.scale__control--value');
@@ -76,7 +75,6 @@ const openModule = () => {
 };
 
 // функционал увеличения и уменьшения картинки
-
 const onSmallerBtnClick = () => {
   if (scaleValue > SCALE_STEP) {
     scaleValue -= SCALE_STEP;
@@ -98,7 +96,7 @@ const commentMaxLengthValidator = (value) => value.length <= 140;
 pristine.addValidator(
   commentUserInput,
   commentMaxLengthValidator,
-  'Длина комментария не должна превышать 140 символов.',
+  'Длина комментария не должна превышать 140 символов!',
   false
 );
 
