@@ -20,6 +20,7 @@ const imagePreview = document.querySelector('.img-upload__preview img');
 
 let scaleValue = 1;
 const SCALE_STEP = 0.25;
+const errorLengthMessages = 'Длина комментария не должна превышать 140 символов!';
 
 // Валидация формы
 const pristine = new Pristine(uploadForm, {
@@ -96,7 +97,7 @@ const commentMaxLengthValidator = (value) => value.length <= 140;
 pristine.addValidator(
   commentUserInput,
   commentMaxLengthValidator,
-  'Длина комментария не должна превышать 140 символов!',
+  errorLengthMessages,
   false
 );
 

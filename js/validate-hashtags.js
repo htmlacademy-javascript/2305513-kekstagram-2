@@ -4,6 +4,16 @@ const MAX_HASHTAGS = 5;
 let errorMessage = '';
 const error = () => errorMessage;
 
+const errors = {
+  onlyHash: 'Хештег не может состоять только из решётки',
+  separatedBySpaces: 'Хештеги разделяются пробелами',
+  startsWithHash: 'Хештег должен начинаться с решётки',
+  noDuplicates: 'Хештеги не должны повторяться',
+  maxLength: `Максимальная величина хештега с решёткой: ${MAX_SIMBOLS} символов`,
+  maxHashtags: 'Досигнуто максимальное количество хештегов',
+  invalidCharacters: 'Хештег содержит недопустимые символы',
+};
+
 const isValidateHashtags = (value) => {
   errorMessage = '';
 
@@ -18,31 +28,31 @@ const isValidateHashtags = (value) => {
   const rules = [
     {
       check: inputArray.some((item) => item === '#'),
-      error: 'Хештег не может состоять только из решётки',
+      error: errors.onlyHash,
     },
     {
       check: inputArray.some((item) => item.slice(1).includes('#')),
-      error: 'Хештеги разделяются пробелами',
+      error: errors.separatedBySpaces,
     },
     {
       check: inputArray.some((item) => item[0] !== '#'),
-      error: 'Хештег должен начинаться с решётки',
+      error: errors.startsWithHash,
     },
     {
       check: inputArray.some((item, num, array) => array.includes(item, num + 1)),
-      error: 'Хештеги не должны повторяться',
+      error: errors.noDuplicates,
     },
     {
       check: inputArray.some((item) => item.length > MAX_SIMBOLS),
-      error: `Максимальная величина хештега с решёткой: ${MAX_SIMBOLS} символов`,
+      error: errors.maxLength,
     },
     {
       check: inputArray.length > MAX_HASHTAGS,
-      error: 'Досигнуто максимальное количество хештегов',
+      error: errors.maxHashtags,
     },
     {
       check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
-      error: 'Хештег содержит недопустимые символы',
+      error: errors.invalidCharacters,
     },
   ];
 

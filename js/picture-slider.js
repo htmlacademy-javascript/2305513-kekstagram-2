@@ -2,6 +2,9 @@ const effectLevelValue = document.querySelector('.effect-level__value');
 const effectsRadio = document.querySelectorAll('.effects__radio');
 const imgPreview = document.querySelector('.img-upload__preview img');
 const slider = document.querySelector('.effect-level__slider');
+const allSlider = document.querySelector('.effect-level');
+
+const arrFilters = ['chrome', 'sepia', 'marvin', 'phobos', 'heat'];
 
 let currentEffect = 'none';
 let currentEffectLevel = 100;
@@ -35,18 +38,11 @@ const updateEffect = () => {
     case 'heat':
       imgPreview.style.filter = `brightness(${(currentEffectLevel / 100 + 1).toFixed(1)})`;
       break;
-    case 'none':
+    default:
       imgPreview.style.filter = '';
       break;
   }
 };
-
-// Изменение слайдера
-slider.noUiSlider.on('update', (values, handle) => {
-  currentEffectLevel = Math.round(values[handle]);
-  effectLevelValue.value = currentEffectLevel;
-  updateEffect();
-});
 
 // Переключение эффектов
 const isEffectsRadio = () => {
@@ -55,13 +51,15 @@ const isEffectsRadio = () => {
       currentEffect = evt.target.value;
 
       // Управление отображением ползунка
-      if (['chrome', 'sepia', 'marvin', 'phobos', 'heat'].includes(currentEffect)) {
+      if (arrFilters.includes(currentEffect)) {
         slider.style.display = 'block';
+        allSlider.style.display = 'block';
         currentEffectLevel = 100;
         slider.noUiSlider.set(currentEffectLevel);
       } else {
-        slider.style.display = 'none';
+        allSlider.style.display = 'none';
         currentEffectLevel = 0;
+        slider.noUiSlider.set(currentEffectLevel); // Убедитесь, что ползунок установлен в 0
       }
 
       updateEffect();
@@ -75,7 +73,15 @@ const resetImagePreview = () => {
   imgPreview.style.filter = '';
 
   slider.style.display = 'none';
+  allSlider.style.display = 'none';
   slider.noUiSlider.set(currentEffectLevel);
 };
+
+// Изменение слайдера
+slider.noUiSlider.on('update', (values, handle) => {
+  currentEffectLevel = Math.round(values[handle]);
+  effectLevelValue.value = currentEffectLevel;
+  updateEffect();
+});
 
 export { isEffectsRadio, resetImagePreview };
