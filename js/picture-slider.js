@@ -58,8 +58,7 @@ const isEffectsRadio = () => {
         slider.noUiSlider.set(currentEffectLevel);
       } else {
         allSlider.style.display = 'none';
-        currentEffectLevel = 0;
-        slider.noUiSlider.set(currentEffectLevel); // Убедитесь, что ползунок установлен в 0
+        slider.noUiSlider.set(currentEffectLevel);
       }
 
       updateEffect();
