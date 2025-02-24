@@ -1,5 +1,7 @@
 import { MESSAGES } from './data.js';
 
+const ERRORE_MESSAGES_REMOVE = 5000;
+
 //рандомное число
 
 const getRandomInteger = (min, max) => {
@@ -33,6 +35,19 @@ const getRandomUniqueElements = () => {
 
 const isEscBtn = (event) => event.key === 'Escape';
 
+
+const erroreMessages = () => {
+  const template = document.getElementById('data-error');
+  const errorMessage = template.content.querySelector('.data-error').cloneNode(true);
+
+  document.body.appendChild(errorMessage);
+  errorMessage.style.display = 'block';
+
+  setTimeout(() => {
+    errorMessage.remove();
+  }, ERRORE_MESSAGES_REMOVE);
+};
+
 // ------------------------------ дополнительное задание через рекурсию ------------------------------
 
 // const getRandomUniqueElements = () => {
@@ -53,4 +68,4 @@ const isEscBtn = (event) => event.key === 'Escape';
 //   return Array.from(uniqueElements);
 // };
 
-export { getRandomUniqueElements, getRandomArrayElement, isEscBtn, getRandomInteger };
+export { getRandomUniqueElements, getRandomArrayElement, isEscBtn, getRandomInteger, erroreMessages };

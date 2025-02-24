@@ -101,6 +101,40 @@ pristine.addValidator(
   false
 );
 
+// отправка формы
+
+const displaySuccessMessage = () => {
+  const template = document.getElementById('success');
+  const successMessage = template.content.cloneNode(true);
+
+  document.body.appendChild(successMessage);
+  const messageBox = successMessage.querySelector('.success');
+  messageBox.style.display = 'block';
+
+  messageBox.querySelector('.success__button').addEventListener('click', () => {
+    messageBox.remove();
+  });
+};
+
+uploadForm.addEventListener('submit', async function (event) {
+  event.preventDefault();
+
+  const formData = new FormData(this);
+
+  try {
+    const response = await fetch(this.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      displaySuccessMessage();
+    } else {
+    }
+  } catch (error) {
+  }
+});
+
 // Функция для обновления модуля
 const updateModule = () => {
   uploadFileInput.addEventListener('change', openModule);
