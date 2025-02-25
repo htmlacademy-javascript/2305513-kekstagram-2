@@ -15,8 +15,6 @@ const startProgram = async () => {
     updateModule();
   } catch (error) {
     erroreMessages();
-    console.log(erroreMessages());
-
   }
 };
 

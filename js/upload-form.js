@@ -41,12 +41,6 @@ pristine.addValidator(
   error
 );
 
-const closeModuleOnEsc = (event) => {
-  if (isEscBtn(event) && !document.activeElement.matches('.text__hashtags, .text__description')) {
-    closeModule();
-  }
-};
-
 // Функция для закрытия модуля
 const closeModule = () => {
   uploadFileOverlay.classList.add('hidden');
@@ -58,6 +52,12 @@ const closeModule = () => {
   scaleValue = 1;
   imagePreview.style.transform = 'scale(1)';
   scaleValueInput.value = '100%';
+};
+
+const closeModuleOnEsc = (event) => {
+  if (isEscBtn(event) && !document.activeElement.matches('.text__hashtags, .text__description')) {
+    closeModule();
+  }
 };
 
 // Масштабирование изображения
@@ -83,7 +83,9 @@ const onBiggerBtnClick = () => {
 // Сообщения
 const createMessage = (id) => {
   const template = document.getElementById(id);
-  if (!template) return;
+  if (!template) {
+    return
+  };
 
   const message = template.content.cloneNode(true);
   const messageBox = message.querySelector(`.${id}`);
