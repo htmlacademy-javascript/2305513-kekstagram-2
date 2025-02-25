@@ -41,6 +41,12 @@ pristine.addValidator(
   error
 );
 
+const closeModuleOnEsc = (event) => {
+  if (isEscBtn(event) && !document.activeElement.matches('.text__hashtags, .text__description')) {
+    closeModule();
+  }
+};
+
 // Функция для закрытия модуля
 const closeModule = () => {
   uploadFileOverlay.classList.add('hidden');
@@ -52,12 +58,6 @@ const closeModule = () => {
   scaleValue = 1;
   imagePreview.style.transform = 'scale(1)';
   scaleValueInput.value = '100%';
-};
-
-const closeModuleOnEsc = (event) => {
-  if (isEscBtn(event) && !document.activeElement.matches('.text__hashtags, .text__description')) {
-    closeModule();
-  }
 };
 
 // Масштабирование изображения
@@ -77,33 +77,6 @@ const onBiggerBtnClick = () => {
   if (scaleValue < 1) {
     scaleValue += SCALE_STEP;
     updateScale(scaleValue);
-  }
-};
-
-// Отправка формы
-const handleFormSubmit = async (event) => {
-  event.preventDefault();
-
-  if (!pristine.validate()) {
-    return;
-  }
-
-  const formData = new FormData(uploadForm);
-
-  try {
-    const response = await fetch(uploadForm.action, {
-      method: 'POST',
-      body: formData
-    });
-
-    if (response.ok) {
-      closeModule();
-      displaySuccessMessage();
-    } else {
-      displayErrorMessage();
-    }
-  } catch (err) {
-    displayErrorMessage();
   }
 };
 
@@ -139,6 +112,33 @@ const createMessage = (id) => {
 
 const displaySuccessMessage = () => createMessage('success');
 const displayErrorMessage = () => createMessage('error');
+
+// Отправка формы
+const handleFormSubmit = async (event) => {
+  event.preventDefault();
+
+  if (!pristine.validate()) {
+    return;
+  }
+
+  const formData = new FormData(uploadForm);
+
+  try {
+    const response = await fetch(uploadForm.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      closeModule();
+      displaySuccessMessage();
+    } else {
+      displayErrorMessage();
+    }
+  } catch (err) {
+    displayErrorMessage();
+  }
+};
 
 // Функция для обновления модуля
 const updateModule = () => {
