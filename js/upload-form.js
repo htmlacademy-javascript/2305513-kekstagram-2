@@ -48,7 +48,6 @@ const closeModule = () => {
   uploadForm.reset();
   pristine.reset();
   resetImagePreview();
-  document.removeEventListener('keydown', closeModuleOnEsc);
   scaleValue = 1;
   imagePreview.style.transform = 'scale(1)';
   scaleValueInput.value = '100%';
@@ -84,8 +83,8 @@ const onBiggerBtnClick = () => {
 const createMessage = (id) => {
   const template = document.getElementById(id);
   if (!template) {
-    return
-  };
+    return;
+  }
 
   const message = template.content.cloneNode(true);
   const messageBox = message.querySelector(`.${id}`);
