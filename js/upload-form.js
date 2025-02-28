@@ -1,6 +1,7 @@
 import { isEscBtn } from './util.js';
 import { error, isValidateHashtags } from './validate-hashtags.js';
 import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
+import { sentData } from './api.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -122,20 +123,12 @@ const handleFormSubmit = async (event) => {
     return;
   }
 
-  const formData = new FormData(uploadForm);
-
   try {
-    const response = await fetch(uploadForm.action, {
-      method: 'POST',
-      body: formData
-    });
+    const formData = new FormData(uploadForm);
+    await sentData(formData);
 
-    if (response.ok) {
-      closeModule();
-      displaySuccessMessage();
-    } else {
-      displayErrorMessage();
-    }
+    closeModule();
+    displaySuccessMessage();
   } catch (err) {
     displayErrorMessage();
   }
@@ -148,6 +141,9 @@ const updateModule = () => {
     pageBody.classList.add('modal-open');
     document.addEventListener('keydown', closeModuleOnEsc);
     resetImagePreview();
+  });
+  commentUserInput.addEventListener('input', () => {
+    pristine.validate(commentUserInput);
   });
 
   uploadCancelBtn.addEventListener('click', closeModule);
