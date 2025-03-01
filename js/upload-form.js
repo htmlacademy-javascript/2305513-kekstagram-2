@@ -30,17 +30,22 @@ const pristine = new Pristine(uploadForm, {
 });
 
 // Валидация
-pristine.addValidator(
-  commentUserInput,
-  (value) => value.length <= 140,
-  errorLengthMessages
-);
+const validatorsConfig = [
+  {
+    field: commentUserInput,
+    validator: (value) => value.length <= 140,
+    errorMessage: errorLengthMessages
+  },
+  {
+    field: hashtagUserInput,
+    validator: (value) => isValidateHashtags(value),
+    errorMessage: error
+  }
+];
 
-pristine.addValidator(
-  hashtagUserInput,
-  (value) => isValidateHashtags(value),
-  error
-);
+validatorsConfig.forEach(({ field, validator, errorMessage }) => {
+  pristine.addValidator(field, validator, errorMessage);
+});
 
 // Функция для закрытия модуля
 const closeModule = () => {
