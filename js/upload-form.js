@@ -22,30 +22,18 @@ let scaleValue = 1;
 const SCALE_STEP = 0.25;
 const errorLengthMessages = 'Длина комментария не должна превышать 140 символов!';
 
-// Валидация формы
+// Валидация
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__form',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-// Валидация
-const validatorsConfig = [
-  {
-    field: commentUserInput,
-    validator: (value) => value.length <= 140,
-    errorMessage: errorLengthMessages
-  },
-  {
-    field: hashtagUserInput,
-    validator: (value) => isValidateHashtags(value),
-    errorMessage: error
-  }
-];
+const validateComment = (value) => value.length <= 140;
+const validateHashtags = (value) => isValidateHashtags(value);
 
-validatorsConfig.forEach(({ field, validator, errorMessage }) => {
-  pristine.addValidator(field, validator, errorMessage);
-});
+pristine.addValidator(commentUserInput, validateComment, errorLengthMessages);
+pristine.addValidator(hashtagUserInput, validateHashtags, error);
 
 // Функция для закрытия модуля
 const closeModule = () => {
