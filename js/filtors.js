@@ -18,6 +18,7 @@ const getRandomPhotos = () => {
   const shuffled = [...originalPhotos].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, RANDOM_PHOTOS_COUNT);
 };
+
 const getDiscussedPhotos = () =>
   [...originalPhotos].sort((a, b) => b.comments.length - a.comments.length);
 
