@@ -23,16 +23,20 @@ const getDiscussedPhotos = () =>
   [...originalPhotos].sort((a, b) => b.comments.length - a.comments.length);
 
 const applyFilter = debounce((photos) => {
-  document.querySelectorAll('.picture').forEach(img => img.remove());
+  document.querySelectorAll('.picture').forEach((img) => {
+    img.remove();
+  });
 
   render(photos);
 }, DEBOUNCE_DELAY);
 
 const onFilterChange = (evt) => {
   const clickedButton = evt.target;
-  if (!clickedButton.matches('.img-filters__button')) return;
+  if (!clickedButton.matches('.img-filters__button')) {
+    return;
+  }
 
-  filterButtons.forEach(btn => btn.classList.remove('img-filters__button--active'));
+  filterButtons.forEach((btn) => btn.classList.remove('img-filters__button--active'));
   clickedButton.classList.add('img-filters__button--active');
 
   currentFilter = clickedButton.id.replace('filter-', '');

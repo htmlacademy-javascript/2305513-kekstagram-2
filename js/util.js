@@ -1,7 +1,7 @@
 import { MESSAGES } from './data.js';
 
 const ERRORE_MESSAGES_REMOVE = 5000;
-const TIMEOUT_DELAY = 500
+const TIMEOUT_DELAY = 500;
 
 //рандомное число
 
@@ -49,7 +49,7 @@ const erroreMessages = () => {
   }, ERRORE_MESSAGES_REMOVE);
 };
 
-const debounce = (callback, TIMEOUT_DELAY) => {
+const debounce = (callback) => {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
