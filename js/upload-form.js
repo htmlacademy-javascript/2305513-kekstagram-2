@@ -2,6 +2,7 @@ import { isEscBtn } from './util.js';
 import { error, isValidateHashtags } from './validate-hashtags.js';
 import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
 import { sentData } from './api.js';
+import { fileInputChange } from './new_photo.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -132,6 +133,7 @@ const updateModule = () => {
   uploadFileInput.addEventListener('change', () => {
     uploadFileOverlay.classList.remove('hidden');
     pageBody.classList.add('modal-open');
+    fileInputChange();
     document.addEventListener('keydown', closeModuleOnEsc);
     resetImagePreview();
   });
