@@ -16,7 +16,7 @@ const fileInputChange = () => {
       item.style.backgroundImage = `url(${url})`;
     });
   } else {
-    document.querySelector('.data-error__title')
+    document.querySelector('.data-error__title');
   }
 };
 
