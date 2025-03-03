@@ -1,5 +1,3 @@
-import { MESSAGES } from './data.js';
-
 const ERRORE_MESSAGES_REMOVE = 5000;
 const TIMEOUT_DELAY = 500;
 
@@ -12,30 +10,7 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-// рандомный элемент из массива
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-// ------------------------------ дополнительное задание через while ------------------------------
-
-const getRandomUniqueElements = () => {
-  // случайное количество от 1 до длины массива
-  const count = Math.floor(Math.random() * (MESSAGES.length)) + 1;
-  const selected = [];
-
-  while (selected.length < count) {
-    const randomIndex = Math.floor(Math.random() * MESSAGES.length);
-    const randomElement = MESSAGES[randomIndex];
-
-    if (!selected.includes(randomElement)) {
-      selected.push(randomElement);
-    }
-  }
-  return selected;
-};
-
 const isEscBtn = (event) => event.key === 'Escape';
-
 
 const erroreMessages = () => {
   const template = document.getElementById('data-error');
@@ -67,45 +42,4 @@ const debounce = (callback) => {
   };
 };
 
-const throttle = (callback, delayBetweenFrames) => {
-  // Используем замыкания, чтобы время "последнего кадра" навсегда приклеилось
-  // к возвращаемой функции с условием, тогда мы его сможем перезаписывать
-  let lastTime = 0;
-
-  return (...rest) => {
-    // Получаем текущую дату в миллисекундах,
-    // чтобы можно было в дальнейшем
-    // вычислять разницу между кадрами
-    const now = new Date();
-
-    // Если время между кадрами больше задержки,
-    // вызываем наш колбэк и перезаписываем lastTime
-    // временем "последнего кадра"
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
-};
-
-// ------------------------------ дополнительное задание через рекурсию ------------------------------
-
-// const getRandomUniqueElements = () => {
-//   if (MESSAGES.length === 0) {
-//     return [];
-//   }
-//   const randomCount = Math.floor(Math.random() * MESSAGES.length) + 1;
-//   const uniqueElements = new Set();
-//   const selectRandomElements = () => {
-//     if (uniqueElements.size === randomCount) {
-//       return;
-//     }
-//     const randomIndex = Math.floor(Math.random() * MESSAGES.length);
-//     uniqueElements.add(MESSAGES[randomIndex]);
-//     selectRandomElements();
-//   };
-//   selectRandomElements();
-//   return Array.from(uniqueElements);
-// };
-
-export { getRandomUniqueElements, getRandomArrayElement, isEscBtn, getRandomInteger, erroreMessages, debounce, throttle };
+export { isEscBtn, getRandomInteger, erroreMessages, debounce };
