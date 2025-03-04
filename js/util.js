@@ -12,7 +12,7 @@ const getRandomInteger = (min, max) => {
 
 const isEscBtn = (event) => event.key === 'Escape';
 
-const erroreMessages = () => {
+const showErrorMessage = () => {
   const template = document.getElementById('data-error');
   const errorMessage = template.content.querySelector('.data-error').cloneNode(true);
 
@@ -42,4 +42,4 @@ const debounce = (callback) => {
   };
 };
 
-export { isEscBtn, getRandomInteger, erroreMessages, debounce };
+export { isEscBtn, getRandomInteger, showErrorMessage, debounce };
