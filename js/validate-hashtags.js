@@ -2,7 +2,7 @@ const MAX_SIMBOLS = 20;
 const MAX_HASHTAGS = 5;
 
 let errorMessage = '';
-const error = () => errorMessage;
+const getErrorMessage = () => errorMessage;
 
 const errors = {
   onlyHash: 'Хештег не может состоять только из решётки',
@@ -65,4 +65,4 @@ const isValidateHashtags = (value) => {
   });
 };
 
-export { error, isValidateHashtags };
+export { getErrorMessage, isValidateHashtags };
