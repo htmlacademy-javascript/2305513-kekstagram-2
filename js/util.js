@@ -1,6 +1,5 @@
-import { MESSAGES } from './data.js';
-
 const ERRORE_MESSAGES_REMOVE = 5000;
+const TIMEOUT_DELAY = 500;
 
 //рандомное число
 
@@ -11,32 +10,9 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-// рандомный элемент из массива
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-// ------------------------------ дополнительное задание через while ------------------------------
-
-const getRandomUniqueElements = () => {
-  // случайное количество от 1 до длины массива
-  const count = Math.floor(Math.random() * (MESSAGES.length)) + 1;
-  const selected = [];
-
-  while (selected.length < count) {
-    const randomIndex = Math.floor(Math.random() * MESSAGES.length);
-    const randomElement = MESSAGES[randomIndex];
-
-    if (!selected.includes(randomElement)) {
-      selected.push(randomElement);
-    }
-  }
-  return selected;
-};
-
 const isEscBtn = (event) => event.key === 'Escape';
 
-
-const erroreMessages = () => {
+const showErrorMessage = () => {
   const template = document.getElementById('data-error');
   const errorMessage = template.content.querySelector('.data-error').cloneNode(true);
 
@@ -48,24 +24,22 @@ const erroreMessages = () => {
   }, ERRORE_MESSAGES_REMOVE);
 };
 
-// ------------------------------ дополнительное задание через рекурсию ------------------------------
+const debounce = (callback) => {
+  // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
+  let timeoutId;
 
-// const getRandomUniqueElements = () => {
-//   if (MESSAGES.length === 0) {
-//     return [];
-//   }
-//   const randomCount = Math.floor(Math.random() * MESSAGES.length) + 1;
-//   const uniqueElements = new Set();
-//   const selectRandomElements = () => {
-//     if (uniqueElements.size === randomCount) {
-//       return;
-//     }
-//     const randomIndex = Math.floor(Math.random() * MESSAGES.length);
-//     uniqueElements.add(MESSAGES[randomIndex]);
-//     selectRandomElements();
-//   };
-//   selectRandomElements();
-//   return Array.from(uniqueElements);
-// };
+  return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
+    clearTimeout(timeoutId);
 
-export { getRandomUniqueElements, getRandomArrayElement, isEscBtn, getRandomInteger, erroreMessages };
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
+
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
+  };
+};
+
+export { isEscBtn, getRandomInteger, showErrorMessage, debounce };

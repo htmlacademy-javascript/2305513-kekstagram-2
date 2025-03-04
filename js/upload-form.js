@@ -1,6 +1,8 @@
 import { isEscBtn } from './util.js';
-import { error, isValidateHashtags } from './validate-hashtags.js';
+import { getErrorMessage, isValidateHashtags } from './validate-hashtags.js';
 import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
+import { sentData } from './api.js';
+import { fileInputChange } from './new-photo.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -21,25 +23,15 @@ let scaleValue = 1;
 const SCALE_STEP = 0.25;
 const errorLengthMessages = 'Длина комментария не должна превышать 140 символов!';
 
-// Валидация формы
+// Валидация
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__form',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-// Валидация
-pristine.addValidator(
-  commentUserInput,
-  (value) => value.length <= 140,
-  errorLengthMessages
-);
-
-pristine.addValidator(
-  hashtagUserInput,
-  (value) => isValidateHashtags(value),
-  error
-);
+const validateComment = (value) => value.length <= 140;
+const validateHashtags = (value) => isValidateHashtags(value);
 
 // Функция для закрытия модуля
 const closeModule = () => {
@@ -90,25 +82,30 @@ const createMessage = (id) => {
   const messageBox = message.querySelector(`.${id}`);
   const closeButton = messageBox.querySelector('button');
 
-  const close = () => messageBox.remove();
-
-  const onDocumentClick = (event) => {
+  function onDocumentClick(event) {
     if (!messageBox.contains(event.target)) {
       close();
     }
-  };
+  }
 
-  const onDocumentKeydown = (event) => {
+  function onDocumentKeydown(event) {
     if (isEscBtn(event)) {
       close();
     }
-  };
+  }
+
+  function close() {
+    messageBox.remove();
+    document.removeEventListener('click', onDocumentClick);
+    document.removeEventListener('keydown', onDocumentKeydown);
+  }
 
   closeButton.addEventListener('click', close);
   document.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentKeydown);
 
   document.body.append(message);
+  return close;
 };
 
 const displaySuccessMessage = () => createMessage('success');
@@ -122,32 +119,31 @@ const handleFormSubmit = async (event) => {
     return;
   }
 
-  const formData = new FormData(uploadForm);
-
   try {
-    const response = await fetch(uploadForm.action, {
-      method: 'POST',
-      body: formData
-    });
+    const formData = new FormData(uploadForm);
+    await sentData(formData);
 
-    if (response.ok) {
-      closeModule();
-      displaySuccessMessage();
-    } else {
-      displayErrorMessage();
-    }
+    closeModule();
+    displaySuccessMessage();
   } catch (err) {
     displayErrorMessage();
   }
 };
+
+pristine.addValidator(commentUserInput, validateComment, errorLengthMessages);
+pristine.addValidator(hashtagUserInput, validateHashtags, getErrorMessage);
 
 // Функция для обновления модуля
 const updateModule = () => {
   uploadFileInput.addEventListener('change', () => {
     uploadFileOverlay.classList.remove('hidden');
     pageBody.classList.add('modal-open');
+    fileInputChange();
     document.addEventListener('keydown', closeModuleOnEsc);
     resetImagePreview();
+  });
+  commentUserInput.addEventListener('input', () => {
+    pristine.validate(commentUserInput);
   });
 
   uploadCancelBtn.addEventListener('click', closeModule);
