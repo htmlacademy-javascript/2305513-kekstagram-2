@@ -1,8 +1,8 @@
 import { isEscBtn } from './util.js';
-import { error, isValidateHashtags } from './validate-hashtags.js';
+import { getErrorMessage, isValidateHashtags } from './validate-hashtags.js';
 import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
 import { sentData } from './api.js';
-import { fileInputChange } from './new_photo.js';
+import { fileInputChange } from './new-photo.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -32,9 +32,6 @@ const pristine = new Pristine(uploadForm, {
 
 const validateComment = (value) => value.length <= 140;
 const validateHashtags = (value) => isValidateHashtags(value);
-
-pristine.addValidator(commentUserInput, validateComment, errorLengthMessages);
-pristine.addValidator(hashtagUserInput, validateHashtags, error);
 
 // Функция для закрытия модуля
 const closeModule = () => {
@@ -85,25 +82,30 @@ const createMessage = (id) => {
   const messageBox = message.querySelector(`.${id}`);
   const closeButton = messageBox.querySelector('button');
 
-  const close = () => messageBox.remove();
-
-  const onDocumentClick = (event) => {
+  function onDocumentClick(event) {
     if (!messageBox.contains(event.target)) {
       close();
     }
-  };
+  }
 
-  const onDocumentKeydown = (event) => {
+  function onDocumentKeydown(event) {
     if (isEscBtn(event)) {
       close();
     }
-  };
+  }
+
+  function close() {
+    messageBox.remove();
+    document.removeEventListener('click', onDocumentClick);
+    document.removeEventListener('keydown', onDocumentKeydown);
+  }
 
   closeButton.addEventListener('click', close);
   document.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentKeydown);
 
   document.body.append(message);
+  return close;
 };
 
 const displaySuccessMessage = () => createMessage('success');
@@ -127,6 +129,9 @@ const handleFormSubmit = async (event) => {
     displayErrorMessage();
   }
 };
+
+pristine.addValidator(commentUserInput, validateComment, errorLengthMessages);
+pristine.addValidator(hashtagUserInput, validateHashtags, getErrorMessage);
 
 // Функция для обновления модуля
 const updateModule = () => {

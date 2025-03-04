@@ -1,4 +1,4 @@
-import { erroreMessages } from './util.js';
+import { showErrorMessage } from './util.js';
 
 const inputNewPhoto = document.querySelector('.img-upload__input');
 const labelNewPhoto = document.querySelector('.img-upload__preview > img');
@@ -18,7 +18,7 @@ const fileInputChange = () => {
       item.style.backgroundImage = `url(${url})`;
     });
   } else {
-    erroreMessages();
+    showErrorMessage();
   }
 };
 
