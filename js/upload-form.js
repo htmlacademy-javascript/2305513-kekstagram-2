@@ -109,8 +109,8 @@ const createMessage = (id) => {
 
   function close() {
     messageBox.remove();
-    document.removeEventListener('click', onDocumentClick);
-    document.removeEventListener('keydown', onDocumentKeydown);
+    document.removeEventListener('click', handleDocumentClick);
+    document.removeEventListener('keydown', handleKeydown);
   }
 
   const handleDocumentClick = (event) =>
@@ -133,16 +133,18 @@ const displayErrorMessage = () => createMessage('error');
 // Отправка формы
 const handleFormSubmit = async (event) => {
   event.preventDefault();
-  const isValid = pristine.validate();
-  if (!isValid) {
-    return
-  };
+
+  if (!pristine.validate()) {
+    return;
+  }
 
   try {
-    await sentData(new FormData(uploadForm));
+    const formData = new FormData(uploadForm);
+    await sentData(formData);
+
     closeModule();
     displaySuccessMessage();
-  } catch {
+  } catch (err) {
     displayErrorMessage();
   }
 };
