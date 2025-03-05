@@ -99,17 +99,19 @@ const onBiggerBtnClick = () => {
 // Системные сообщения
 const createMessage = (id) => {
   const template = document.getElementById(id);
-  if (!template) return;
+  if (!template) {
+    return
+  };
 
   const message = template.content.cloneNode(true);
   const messageBox = message.querySelector(`.${id}`);
   const closeButton = messageBox.querySelector('button');
 
-  const close = () => {
+  function close() {
     messageBox.remove();
-    document.removeEventListener('click', handleDocumentClick);
-    document.removeEventListener('keydown', handleKeydown);
-  };
+    document.removeEventListener('click', onDocumentClick);
+    document.removeEventListener('keydown', onDocumentKeydown);
+  }
 
   const handleDocumentClick = (event) =>
     !messageBox.contains(event.target) && close();
@@ -132,7 +134,9 @@ const displayErrorMessage = () => createMessage('error');
 const handleFormSubmit = async (event) => {
   event.preventDefault();
   const isValid = pristine.validate();
-  if (!isValid) return;
+  if (!isValid) {
+    return
+  };
 
   try {
     await sentData(new FormData(uploadForm));
