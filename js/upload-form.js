@@ -100,8 +100,8 @@ const onBiggerBtnClick = () => {
 const createMessage = (id) => {
   const template = document.getElementById(id);
   if (!template) {
-    return
-  };
+    return;
+  }
 
   const message = template.content.cloneNode(true);
   const messageBox = message.querySelector(`.${id}`);
@@ -113,11 +113,13 @@ const createMessage = (id) => {
     document.removeEventListener('keydown', handleKeydown);
   }
 
-  const handleDocumentClick = (event) =>
-    !messageBox.contains(event.target) && close();
+  function handleDocumentClick(event) {
+    !messageBox.contains(event.target) && close()
+  };
 
-  const handleKeydown = (event) =>
-    isEscBtn(event) && close();
+  function handleKeydown(event) {
+    isEscBtn(event) && close()
+  };
 
   closeButton.addEventListener('click', close);
   document.addEventListener('click', handleDocumentClick);
