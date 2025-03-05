@@ -25,41 +25,38 @@ let scaleValue = 1;
 
 // Валидация
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__form',
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'form__item--invalid',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'form__error',
 });
 
+// Валидаторы
 const validateComment = (value) => value.length <= 140;
 const validateHashtags = (value) => isValidateHashtags(value);
 
-// pristine.addValidator(
-//   commentUserInput,
-//   validateComment,
-//   errorLengthMessages,
-//   {
-//     errorTextParent: commentUserInput.parentElement,
-//     errorTextTag: 'div',
-//     errorTextClass: 'pristine-error--comment'
-//   }
-// );
+// Добавление валидаторов с кастомизацией
+pristine.addValidator(
+  commentUserInput,
+  validateComment,
+  errorLengthMessages,
+  {
+    errorTextParent: commentUserInput.parentElement,
+    errorTextTag: 'div',
+    errorTextClass: 'pristine-error'
+  }
+);
 
-// pristine.addValidator(
-//   hashtagUserInput,
-//   (value) => {
-//     const result = isValidateHashtags(value);
-//     return result;
-//   },
-//   () => {
-//     const message = getErrorMessage(hashtagUserInput.value);
-//     return message;
-//   },
-//   {
-//     errorTextParent: hashtagUserInput.parentElement,
-//     errorTextTag: 'div',
-//     errorTextClass: 'pristine-error--hashtag'
-//   }
-// );
+pristine.addValidator(
+  hashtagUserInput,
+  validateHashtags,
+  getErrorMessage,
+  {
+    errorTextParent: hashtagUserInput.parentElement,
+    errorTextTag: 'div',
+    errorTextClass: 'pristine-error'
+  }
+);
 
 // Функция для закрытия модуля
 const closeModule = () => {
@@ -87,50 +84,42 @@ const updateScale = (value) => {
 
 const onSmallerBtnClick = () => {
   if (scaleValue > SCALE_STEP) {
-    scaleValue -= SCALE_STEP;
+    scaleValue = Math.max(scaleValue - SCALE_STEP, SCALE_STEP);
     updateScale(scaleValue);
   }
 };
 
 const onBiggerBtnClick = () => {
   if (scaleValue < 1) {
-    scaleValue += SCALE_STEP;
+    scaleValue = Math.min(scaleValue + SCALE_STEP, 1);
     updateScale(scaleValue);
   }
 };
 
-// Сообщения
+// Системные сообщения
 const createMessage = (id) => {
   const template = document.getElementById(id);
-  if (!template) {
-    return;
-  }
+  if (!template) return;
 
   const message = template.content.cloneNode(true);
   const messageBox = message.querySelector(`.${id}`);
   const closeButton = messageBox.querySelector('button');
 
-  function onDocumentClick(event) {
-    if (!messageBox.contains(event.target)) {
-      close();
-    }
-  }
-
-  function onDocumentKeydown(event) {
-    if (isEscBtn(event)) {
-      close();
-    }
-  }
-
-  function close() {
+  const close = () => {
     messageBox.remove();
-    document.removeEventListener('click', onDocumentClick);
-    document.removeEventListener('keydown', onDocumentKeydown);
-  }
+    document.removeEventListener('click', handleDocumentClick);
+    document.removeEventListener('keydown', handleKeydown);
+  };
+
+  const handleDocumentClick = (event) =>
+    !messageBox.contains(event.target) && close();
+
+  const handleKeydown = (event) =>
+    isEscBtn(event) && close();
 
   closeButton.addEventListener('click', close);
-  document.addEventListener('click', onDocumentClick);
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', handleDocumentClick);
+  document.addEventListener('keydown', handleKeydown);
 
   document.body.append(message);
   return close;
@@ -142,24 +131,17 @@ const displayErrorMessage = () => createMessage('error');
 // Отправка формы
 const handleFormSubmit = async (event) => {
   event.preventDefault();
-
-  if (!pristine.validate()) {
-    return;
-  }
+  const isValid = pristine.validate();
+  if (!isValid) return;
 
   try {
-    const formData = new FormData(uploadForm);
-    await sentData(formData);
-
+    await sentData(new FormData(uploadForm));
     closeModule();
     displaySuccessMessage();
-  } catch (err) {
+  } catch {
     displayErrorMessage();
   }
 };
-
-pristine.addValidator(commentUserInput, validateComment, errorLengthMessages);
-pristine.addValidator(hashtagUserInput, validateHashtags, getErrorMessage);
 
 // Функция для обновления модуля
 const updateModule = () => {
@@ -170,13 +152,14 @@ const updateModule = () => {
     document.addEventListener('keydown', closeModuleOnEsc);
     resetImagePreview();
   });
-  commentUserInput.addEventListener('input', () => {
-    pristine.validate(commentUserInput);
-  });
 
-  // hashtagUserInput.addEventListener('input', () => {
-  //   pristine.validate(hashtagUserInput);
-  // });
+  const validateField = (field) => {
+    pristine.resetErrors(field);
+    pristine.validate(field);
+  };
+
+  commentUserInput.addEventListener('input', () => validateField(commentUserInput));
+  hashtagUserInput.addEventListener('input', () => validateField(hashtagUserInput));
 
   uploadCancelBtn.addEventListener('click', closeModule);
   smallerBtn.addEventListener('click', onSmallerBtnClick);
