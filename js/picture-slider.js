@@ -40,7 +40,6 @@ const updateEffect = () => {
       break;
     default:
       imgPreview.style.filter = '';
-      break;
   }
 };
 

@@ -1,15 +1,6 @@
 const ERRORE_MESSAGES_REMOVE = 5000;
 const TIMEOUT_DELAY = 500;
 
-//рандомное число
-
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
 const isEscBtn = (event) => event.key === 'Escape';
 
 const showErrorMessage = () => {
@@ -42,4 +33,4 @@ const debounce = (callback) => {
   };
 };
 
-export { isEscBtn, getRandomInteger, showErrorMessage, debounce };
+export { isEscBtn, showErrorMessage, debounce };

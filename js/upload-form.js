@@ -19,15 +19,15 @@ const biggerBtn = document.querySelector('.scale__control--bigger');
 const scaleValueInput = document.querySelector('.scale__control--value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-let scaleValue = 1;
 const SCALE_STEP = 0.25;
 const errorLengthMessages = 'Длина комментария не должна превышать 140 символов!';
+let scaleValue = 1;
 
 // Валидация
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__form',
+  classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error',
+  errorTextClass: 'img-upload__error-text'
 });
 
 const validateComment = (value) => value.length <= 140;
@@ -130,8 +130,27 @@ const handleFormSubmit = async (event) => {
   }
 };
 
-pristine.addValidator(commentUserInput, validateComment, errorLengthMessages);
-pristine.addValidator(hashtagUserInput, validateHashtags, getErrorMessage);
+pristine.addValidator(
+  commentUserInput,
+  validateComment,
+  errorLengthMessages,
+  {
+    errorTextParent: commentUserInput.parentElement,
+    errorTextTag: 'span',
+    errorTextClass: 'error-text error-text--comment'
+  }
+);
+
+pristine.addValidator(
+  hashtagUserInput,
+  validateHashtags,
+  getErrorMessage,
+  {
+    errorTextParent: hashtagUserInput.parentElement,
+    errorTextTag: 'span',
+    errorTextClass: 'error-text error-text--hashtag'
+  }
+);
 
 // Функция для обновления модуля
 const updateModule = () => {
@@ -144,6 +163,12 @@ const updateModule = () => {
   });
   commentUserInput.addEventListener('input', () => {
     pristine.validate(commentUserInput);
+    pristine.resetErrors(commentUserInput);
+  });
+
+  hashtagUserInput.addEventListener('input', () => {
+    pristine.validate(hashtagUserInput);
+    pristine.resetErrors(hashtagUserInput);
   });
 
   uploadCancelBtn.addEventListener('click', closeModule);

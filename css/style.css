@@ -3,8 +3,7 @@
 
 @font-face {
   font-family: "Open Sans";
-  src:
-    url("../fonts/OpenSansCondensed-Bold.woff2") format("woff2"),
+  src: url("../fonts/OpenSansCondensed-Bold.woff2") format("woff2"),
     url("../fonts/OpenSansCondensed-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
@@ -13,8 +12,7 @@
 
 @font-face {
   font-family: "Open Sans";
-  src:
-    url("../fonts/OpenSans-Regular.woff2") format("woff2"),
+  src: url("../fonts/OpenSans-Regular.woff2") format("woff2"),
     url("../fonts/OpenSans-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
@@ -677,7 +675,7 @@ main {
   width: 450px;
 
   margin: 0 auto;
-  margin-bottom: 20px;
+
   padding: 5px 10px;
 
   font-family: "Open Sans", "Arial", sans-serif;
@@ -968,8 +966,7 @@ main {
 @keyframes spinner {
   0%,
   100% {
-    box-shadow:
-      0em -2.6em 0em 0em #3b77c0,
+    box-shadow: 0em -2.6em 0em 0em #3b77c0,
       1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2),
       2.5em 0em 0 0em rgba(51, 102, 204, 0.2),
       1.75em 1.75em 0 0em rgba(51, 102, 204, 0.2),
@@ -979,10 +976,8 @@ main {
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.7);
   }
   12.5% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.7),
-      1.8em -1.8em 0 0em #3b77c0,
-      2.5em 0em 0 0em rgba(51, 102, 204, 0.2),
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.7),
+      1.8em -1.8em 0 0em #3b77c0, 2.5em 0em 0 0em rgba(51, 102, 204, 0.2),
       1.75em 1.75em 0 0em rgba(51, 102, 204, 0.2),
       0em 2.5em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.2),
@@ -990,10 +985,8 @@ main {
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.5);
   }
   25% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.5),
-      1.8em -1.8em 0 0em rgba(51, 102, 204, 0.7),
-      2.5em 0em 0 0em #3b77c0,
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.5),
+      1.8em -1.8em 0 0em rgba(51, 102, 204, 0.7), 2.5em 0em 0 0em #3b77c0,
       1.75em 1.75em 0 0em rgba(51, 102, 204, 0.2),
       0em 2.5em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.2),
@@ -1001,59 +994,49 @@ main {
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2);
   }
   37.5% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
       1.8em -1.8em 0 0em rgba(51, 102, 204, 0.5),
-      2.5em 0em 0 0em rgba(51, 102, 204, 0.7),
-      1.75em 1.75em 0 0em #3b77c0,
+      2.5em 0em 0 0em rgba(51, 102, 204, 0.7), 1.75em 1.75em 0 0em #3b77c0,
       0em 2.5em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.2),
       -2.6em 0em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2);
   }
   50% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
       1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2),
       2.5em 0em 0 0em rgba(51, 102, 204, 0.5),
-      1.75em 1.75em 0 0em rgba(51, 102, 204, 0.7),
-      0em 2.5em 0 0em #3b77c0,
+      1.75em 1.75em 0 0em rgba(51, 102, 204, 0.7), 0em 2.5em 0 0em #3b77c0,
       -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.2),
       -2.6em 0em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2);
   }
   62.5% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
       1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2),
       2.5em 0em 0 0em rgba(51, 102, 204, 0.2),
       1.75em 1.75em 0 0em rgba(51, 102, 204, 0.5),
-      0em 2.5em 0 0em rgba(51, 102, 204, 0.7),
-      -1.8em 1.8em 0 0em #3b77c0,
+      0em 2.5em 0 0em rgba(51, 102, 204, 0.7), -1.8em 1.8em 0 0em #3b77c0,
       -2.6em 0em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2);
   }
   75% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
       1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2),
       2.5em 0em 0 0em rgba(51, 102, 204, 0.2),
       1.75em 1.75em 0 0em rgba(51, 102, 204, 0.2),
       0em 2.5em 0 0em rgba(51, 102, 204, 0.5),
-      -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.7),
-      -2.6em 0em 0 0em #3b77c0,
+      -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.7), -2.6em 0em 0 0em #3b77c0,
       -1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2);
   }
   87.5% {
-    box-shadow:
-      0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
+    box-shadow: 0em -2.6em 0em 0em rgba(51, 102, 204, 0.2),
       1.8em -1.8em 0 0em rgba(51, 102, 204, 0.2),
       2.5em 0em 0 0em rgba(51, 102, 204, 0.2),
       1.75em 1.75em 0 0em rgba(51, 102, 204, 0.2),
       0em 2.5em 0 0em rgba(51, 102, 204, 0.2),
       -1.8em 1.8em 0 0em rgba(51, 102, 204, 0.5),
-      -2.6em 0em 0 0em rgba(51, 102, 204, 0.7),
-      -1.8em -1.8em 0 0em #3b77c0;
+      -2.6em 0em 0 0em rgba(51, 102, 204, 0.7), -1.8em -1.8em 0 0em #3b77c0;
   }
 }
 
@@ -1396,6 +1379,18 @@ main {
   font-size: 20px;
   text-align: center;
   background-color: #fd4d4b;
+}
+
+.form__item--invalid {
+  border-color: #ff0000;
+}
+
+.img-upload__error-text {
+  background-color: #ffe753;
+  color: #ff0000;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
 }
 
 /* Адаптивности чуток
