@@ -2,7 +2,7 @@ import { isEscBtn } from './util.js';
 import { getErrorMessage, isValidateHashtags } from './validate-hashtags.js';
 import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
 import { sentData } from './api.js';
-import { fileInputChange } from './new-photo.js';
+import { fileInputChange } from './new-photo12.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -19,9 +19,9 @@ const biggerBtn = document.querySelector('.scale__control--bigger');
 const scaleValueInput = document.querySelector('.scale__control--value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-let scaleValue = 1;
 const SCALE_STEP = 0.25;
 const errorLengthMessages = 'Длина комментария не должна превышать 140 символов!';
+let scaleValue = 1;
 
 // Валидация
 const pristine = new Pristine(uploadForm, {
