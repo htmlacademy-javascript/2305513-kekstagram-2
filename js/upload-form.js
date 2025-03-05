@@ -2,7 +2,7 @@ import { isEscBtn } from './util.js';
 import { getErrorMessage, isValidateHashtags } from './validate-hashtags.js';
 import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
 import { sentData } from './api.js';
-import { fileInputChange } from './new-photo12.js';
+import { fileInputChange } from './new-photo.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
