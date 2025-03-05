@@ -33,6 +33,34 @@ const pristine = new Pristine(uploadForm, {
 const validateComment = (value) => value.length <= 140;
 const validateHashtags = (value) => isValidateHashtags(value);
 
+// pristine.addValidator(
+//   commentUserInput,
+//   validateComment,
+//   errorLengthMessages,
+//   {
+//     errorTextParent: commentUserInput.parentElement,
+//     errorTextTag: 'div',
+//     errorTextClass: 'pristine-error--comment'
+//   }
+// );
+
+// pristine.addValidator(
+//   hashtagUserInput,
+//   (value) => {
+//     const result = isValidateHashtags(value);
+//     return result;
+//   },
+//   () => {
+//     const message = getErrorMessage(hashtagUserInput.value);
+//     return message;
+//   },
+//   {
+//     errorTextParent: hashtagUserInput.parentElement,
+//     errorTextTag: 'div',
+//     errorTextClass: 'pristine-error--hashtag'
+//   }
+// );
+
 // Функция для закрытия модуля
 const closeModule = () => {
   uploadFileOverlay.classList.add('hidden');
@@ -145,6 +173,10 @@ const updateModule = () => {
   commentUserInput.addEventListener('input', () => {
     pristine.validate(commentUserInput);
   });
+
+  // hashtagUserInput.addEventListener('input', () => {
+  //   pristine.validate(hashtagUserInput);
+  // });
 
   uploadCancelBtn.addEventListener('click', closeModule);
   smallerBtn.addEventListener('click', onSmallerBtnClick);
