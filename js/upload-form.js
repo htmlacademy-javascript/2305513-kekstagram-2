@@ -26,37 +26,12 @@ let scaleValue = 1;
 // Валидация
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
-  errorClass: 'form__item--invalid',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'form__error',
+  errorTextClass: 'img-upload__error-text'
 });
 
-// Валидаторы
 const validateComment = (value) => value.length <= 140;
 const validateHashtags = (value) => isValidateHashtags(value);
-
-// Добавление валидаторов с кастомизацией
-pristine.addValidator(
-  commentUserInput,
-  validateComment,
-  errorLengthMessages,
-  {
-    errorTextParent: commentUserInput.parentElement,
-    errorTextTag: 'div',
-    errorTextClass: 'pristine-error'
-  }
-);
-
-pristine.addValidator(
-  hashtagUserInput,
-  validateHashtags,
-  getErrorMessage,
-  {
-    errorTextParent: hashtagUserInput.parentElement,
-    errorTextTag: 'div',
-    errorTextClass: 'pristine-error'
-  }
-);
 
 // Функция для закрытия модуля
 const closeModule = () => {
@@ -84,19 +59,19 @@ const updateScale = (value) => {
 
 const onSmallerBtnClick = () => {
   if (scaleValue > SCALE_STEP) {
-    scaleValue = Math.max(scaleValue - SCALE_STEP, SCALE_STEP);
+    scaleValue -= SCALE_STEP;
     updateScale(scaleValue);
   }
 };
 
 const onBiggerBtnClick = () => {
   if (scaleValue < 1) {
-    scaleValue = Math.min(scaleValue + SCALE_STEP, 1);
+    scaleValue += SCALE_STEP;
     updateScale(scaleValue);
   }
 };
 
-// Системные сообщения
+// Сообщения
 const createMessage = (id) => {
   const template = document.getElementById(id);
   if (!template) {
@@ -107,23 +82,27 @@ const createMessage = (id) => {
   const messageBox = message.querySelector(`.${id}`);
   const closeButton = messageBox.querySelector('button');
 
-  function close() {
-    messageBox.remove();
-    document.removeEventListener('click', handleDocumentClick);
-    document.removeEventListener('keydown', handleKeydown);
+  function onDocumentClick(event) {
+    if (!messageBox.contains(event.target)) {
+      close();
+    }
   }
 
-  function handleDocumentClick(event) {
-    !messageBox.contains(event.target) && close()
-  };
+  function onDocumentKeydown(event) {
+    if (isEscBtn(event)) {
+      close();
+    }
+  }
 
-  function handleKeydown(event) {
-    isEscBtn(event) && close()
-  };
+  function close() {
+    messageBox.remove();
+    document.removeEventListener('click', onDocumentClick);
+    document.removeEventListener('keydown', onDocumentKeydown);
+  }
 
   closeButton.addEventListener('click', close);
-  document.addEventListener('click', handleDocumentClick);
-  document.addEventListener('keydown', handleKeydown);
+  document.addEventListener('click', onDocumentClick);
+  document.addEventListener('keydown', onDocumentKeydown);
 
   document.body.append(message);
   return close;
@@ -151,6 +130,28 @@ const handleFormSubmit = async (event) => {
   }
 };
 
+pristine.addValidator(
+  commentUserInput,
+  validateComment,
+  errorLengthMessages,
+  {
+    errorTextParent: commentUserInput.parentElement,
+    errorTextTag: 'span',
+    errorTextClass: 'error-text error-text--comment'
+  }
+);
+
+pristine.addValidator(
+  hashtagUserInput,
+  validateHashtags,
+  getErrorMessage,
+  {
+    errorTextParent: hashtagUserInput.parentElement,
+    errorTextTag: 'span',
+    errorTextClass: 'error-text error-text--hashtag'
+  }
+);
+
 // Функция для обновления модуля
 const updateModule = () => {
   uploadFileInput.addEventListener('change', () => {
@@ -160,14 +161,15 @@ const updateModule = () => {
     document.addEventListener('keydown', closeModuleOnEsc);
     resetImagePreview();
   });
+  commentUserInput.addEventListener('input', () => {
+    pristine.validate(commentUserInput);
+    pristine.resetErrors(commentUserInput);
+  });
 
-  const validateField = (field) => {
-    pristine.resetErrors(field);
-    pristine.validate(field);
-  };
-
-  commentUserInput.addEventListener('input', () => validateField(commentUserInput));
-  hashtagUserInput.addEventListener('input', () => validateField(hashtagUserInput));
+  hashtagUserInput.addEventListener('input', () => {
+    pristine.validate(hashtagUserInput);
+    pristine.resetErrors(hashtagUserInput);
+  });
 
   uploadCancelBtn.addEventListener('click', closeModule);
   smallerBtn.addEventListener('click', onSmallerBtnClick);

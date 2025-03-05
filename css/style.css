@@ -1385,7 +1385,7 @@ main {
   border-color: #ff0000;
 }
 
-.form__error {
+.img-upload__error-text {
   background-color: #ffe753;
   color: #ff0000;
   font-size: 12px;
