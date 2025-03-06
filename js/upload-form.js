@@ -4,6 +4,8 @@ import { isEffectsRadio, resetImagePreview } from './picture-slider.js';
 import { sentData } from './api.js';
 import { fileInputChange } from './new-photo.js';
 
+const SCALE_STEP = 0.25;
+
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
 
@@ -19,9 +21,9 @@ const biggerBtn = document.querySelector('.scale__control--bigger');
 const scaleValueInput = document.querySelector('.scale__control--value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-const SCALE_STEP = 0.25;
 const errorLengthMessages = 'Длина комментария не должна превышать 140 символов!';
 let scaleValue = 1;
+let isErrorMessageOpen = false;
 
 // Валидация
 const pristine = new Pristine(uploadForm, {
@@ -34,7 +36,7 @@ const validateComment = (value) => value.length <= 140;
 const validateHashtags = (value) => isValidateHashtags(value);
 
 // Функция для закрытия модуля
-const closeModule = () => {
+const onModuleCloseClick = () => {
   uploadFileOverlay.classList.add('hidden');
   pageBody.classList.remove('modal-open');
   uploadForm.reset();
@@ -43,11 +45,14 @@ const closeModule = () => {
   scaleValue = 1;
   imagePreview.style.transform = 'scale(1)';
   scaleValueInput.value = '100%';
+  isErrorMessageOpen = false;
 };
 
-const closeModuleOnEsc = (event) => {
-  if (isEscBtn(event) && !document.activeElement.matches('.text__hashtags, .text__description')) {
-    closeModule();
+const onEscCloseModuleClick = (event) => {
+  if (isEscBtn(event) &&
+    !document.activeElement.matches('.text__hashtags, .text__description') &&
+    !isErrorMessageOpen) {
+    onModuleCloseClick();
   }
 };
 
@@ -80,31 +85,42 @@ const createMessage = (id) => {
 
   const message = template.content.cloneNode(true);
   const messageBox = message.querySelector(`.${id}`);
-  const closeButton = messageBox.querySelector('button');
+  const closeButton = messageBox?.querySelector('button');
 
-  function onDocumentClick(event) {
+  if (!messageBox || !closeButton) {
+    return;
+  }
+
+  // Локальный обработчик ESC для попапа
+  const onPopupEscKeydown = (event) => {
+    if (isEscBtn(event)) {
+      event.stopPropagation();
+      close();
+    }
+  };
+
+  const onDocumentClick = (event) => {
     if (!messageBox.contains(event.target)) {
       close();
     }
-  }
-
-  function onDocumentKeydown(event) {
-    if (isEscBtn(event)) {
-      close();
-    }
-  }
+  };
 
   function close() {
-    messageBox.remove();
+    if (messageBox.parentElement) {
+      messageBox.remove();
+    }
+    document.removeEventListener('keydown', onPopupEscKeydown);
     document.removeEventListener('click', onDocumentClick);
-    document.removeEventListener('keydown', onDocumentKeydown);
+    isErrorMessageOpen = false;
   }
 
-  closeButton.addEventListener('click', close);
+  document.addEventListener('keydown', onPopupEscKeydown);
   document.addEventListener('click', onDocumentClick);
-  document.addEventListener('keydown', onDocumentKeydown);
+  closeButton.addEventListener('click', close);
 
   document.body.append(message);
+  isErrorMessageOpen = true;
+
   return close;
 };
 
@@ -123,7 +139,7 @@ const handleFormSubmit = async (event) => {
     const formData = new FormData(uploadForm);
     await sentData(formData);
 
-    closeModule();
+    onModuleCloseClick();
     displaySuccessMessage();
   } catch (err) {
     displayErrorMessage();
@@ -158,20 +174,18 @@ const updateModule = () => {
     uploadFileOverlay.classList.remove('hidden');
     pageBody.classList.add('modal-open');
     fileInputChange();
-    document.addEventListener('keydown', closeModuleOnEsc);
+    document.addEventListener('keydown', onEscCloseModuleClick);
     resetImagePreview();
   });
   commentUserInput.addEventListener('input', () => {
     pristine.validate(commentUserInput);
-    pristine.resetErrors(commentUserInput);
   });
 
   hashtagUserInput.addEventListener('input', () => {
     pristine.validate(hashtagUserInput);
-    pristine.resetErrors(hashtagUserInput);
   });
 
-  uploadCancelBtn.addEventListener('click', closeModule);
+  uploadCancelBtn.addEventListener('click', onModuleCloseClick);
   smallerBtn.addEventListener('click', onSmallerBtnClick);
   biggerBtn.addEventListener('click', onBiggerBtnClick);
   uploadForm.addEventListener('submit', handleFormSubmit);

@@ -1,5 +1,7 @@
 import { isEscBtn } from './util.js';
 
+const COMMENTS_TO_SHOW = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const commentsContainer = bigPicture.querySelector('.social__comments');
 const closeBigPictureBtn = bigPicture.querySelector('.big-picture__cancel');
@@ -7,8 +9,6 @@ const picturesContainer = document.querySelector('.pictures');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 const commentShownCount = bigPicture.querySelector('.social__comment-shown-count');
 const commentTotalCount = bigPicture.querySelector('.social__comment-total-count');
-
-const COMMENTS_TO_SHOW = 5;
 
 const renderComments = (comments) => {
   commentsContainer.innerHTML = '';
@@ -41,7 +41,7 @@ const renderComments = (comments) => {
   commentTotalCount.textContent = comments.length;
 };
 
-const showMoreComments = () => {
+const onClickShowMoreComments = () => {
   const hiddenComments = commentsContainer.querySelectorAll('.hidden');
   const commentsToShow = Array.from(hiddenComments).slice(0, COMMENTS_TO_SHOW);
   commentsToShow.forEach((comment) => {
@@ -63,14 +63,14 @@ const openBigPicture = (currentPicture) => {
   renderComments(currentPicture.comments);
 };
 
-const closeBigPicture = () => {
+const onClickBigPictureСlose = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
 
-const closeBigPictureOnEsc = (event) => {
+const onClickOnEscBigPictureСlose = (event) => {
   if (isEscBtn(event)) {
-    closeBigPicture();
+    onClickBigPictureСlose();
   }
 };
 
@@ -86,9 +86,9 @@ const handlePictureClick = (evt, generatedPosts) => {
 
 const bigPictureHandler = (generatedPosts) => {
   picturesContainer.addEventListener('click', (evt) => handlePictureClick(evt, generatedPosts));
-  closeBigPictureBtn.addEventListener('click', closeBigPicture);
-  document.addEventListener('keydown', closeBigPictureOnEsc);
-  commentsLoader.addEventListener('click', showMoreComments);
+  closeBigPictureBtn.addEventListener('click', onClickBigPictureСlose);
+  document.addEventListener('keydown', onClickOnEscBigPictureСlose);
+  commentsLoader.addEventListener('click', onClickShowMoreComments);
 };
 
 export { bigPictureHandler };
