@@ -3,6 +3,7 @@ import { render } from './posts.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
 const DEBOUNCE_DELAY = 500;
+
 const filtersContainer = document.querySelector('.img-filters');
 const filterButtons = filtersContainer.querySelectorAll('.img-filters__button');
 

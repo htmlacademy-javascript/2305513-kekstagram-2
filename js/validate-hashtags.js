@@ -23,35 +23,35 @@ const isValidateHashtags = (value) => {
     return true;
   }
 
-  const inputArray = inputText.split(/\s+/);
+  const hashtagsList = inputText.split(/\s+/);
 
   const rules = [
     {
-      check: inputArray.some((item) => item === '#'),
+      check: hashtagsList.some((item) => item === '#'),
       error: errors.onlyHash,
     },
     {
-      check: inputArray.some((item) => item.slice(1).includes('#')),
+      check: hashtagsList.some((item) => item.slice(1).includes('#')),
       error: errors.separatedBySpaces,
     },
     {
-      check: inputArray.some((item) => item[0] !== '#'),
+      check: hashtagsList.some((item) => item[0] !== '#'),
       error: errors.startsWithHash,
     },
     {
-      check: inputArray.some((item, num, array) => array.includes(item, num + 1)),
+      check: hashtagsList.some((item, num, arrays) => arrays.includes(item, num + 1)),
       error: errors.noDuplicates,
     },
     {
-      check: inputArray.some((item) => item.length > MAX_SIMBOLS),
+      check: hashtagsList.some((item) => item.length > MAX_SIMBOLS),
       error: errors.maxLength,
     },
     {
-      check: inputArray.length > MAX_HASHTAGS,
+      check: hashtagsList.length > MAX_HASHTAGS,
       error: errors.maxHashtags,
     },
     {
-      check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
+      check: hashtagsList.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
       error: errors.invalidCharacters,
     },
   ];
